@@ -27,13 +27,17 @@ export class WindowCamera extends THREE.PerspectiveCamera {
     this.world = world;
     this.window_index = window_index;
     this.fov = 20;
+    const offset = 0.5;
+    this.near = offset;
+    this.far = 1000;
+    this.zoom = 1;
 
     // set the position based on the window index
     const worldPos = new THREE.Vector3();
     const worldDirection = new THREE.Vector3();
     this.object.getWorldPosition(worldPos);
     this.object.getWorldDirection(worldDirection);
-    this.position.set(worldPos.x, worldPos.y, worldPos.z);
+    this.position.set(worldPos.x + offset, worldPos.y, worldPos.z);
     this.rotation.copy(this.object.rotation);
     if (this.world.ccamOptions.rotated) this.rotation.z = Math.PI * -0.5;
     // this.lookAt(root.position);

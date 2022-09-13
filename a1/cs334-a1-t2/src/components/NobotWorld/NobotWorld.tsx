@@ -15,12 +15,14 @@ type NobotWorldProps = {
   world: string;
   windowsStart: number;
   windowsEnd: number;
+  rotated?: boolean;
 };
 
 const NobotWorld: React.FC<NobotWorldProps> = function NobotWorld({
   world,
   windowsStart,
   windowsEnd,
+  rotated
 }) {
   // connect canvas to game
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,7 @@ const NobotWorld: React.FC<NobotWorldProps> = function NobotWorld({
       {
         windowsStart,
         windowsEnd,
-        rotated: true
+        rotated
       },
       world,
       {
