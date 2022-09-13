@@ -81,7 +81,9 @@ export class Scenario {
     this.world.cameras = cameras
       .sort((a, b) => a.window_index - b.window_index)
       .filter(
-        (_, i) => i >= this.world.windowsStart && i <= this.world.windowsEnd
+        (_, i) =>
+          i >= this.world.ccamOptions.windowsStart - 1 &&
+          i <= this.world.ccamOptions.windowsEnd - 1
       );
   }
 

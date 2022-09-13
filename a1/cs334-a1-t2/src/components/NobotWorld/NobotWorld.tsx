@@ -41,8 +41,11 @@ const NobotWorld: React.FC<NobotWorldProps> = function NobotWorld({
     // worldRef.current = new World(canvasRef.current!, '/models/world.glb');
     worldRef.current = new World(
       canvasRef.current!,
-      windowsStart,
-      windowsEnd,
+      {
+        windowsStart,
+        windowsEnd,
+        rotated: true
+      },
       world,
       {
         onDownloadStart,

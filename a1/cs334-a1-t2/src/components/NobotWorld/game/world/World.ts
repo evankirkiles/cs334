@@ -22,6 +22,12 @@ import { Scenario } from "./Scenario";
 
 const safeLog = _.throttle((...s) => console.log(...s), 1000);
 
+type CCAMOptions = {
+  windowsStart: number;
+  windowsEnd: number;
+  rotated?: boolean;
+};
+
 export class World {
   // game properties
   public renderer: THREE.WebGLRenderer;
@@ -30,8 +36,7 @@ export class World {
   public viewportHeight: number;
 
   // CCAM-specific setup
-  public windowsStart: number;
-  public windowsEnd: number;
+  public ccamOptions: CCAMOptions;
 
   // world assets
   public graphicsWorld: THREE.Scene;
@@ -75,8 +80,7 @@ export class World {
    */
   constructor(
     target: HTMLDivElement,
-    windowsStart: number,
-    windowsEnd: number,
+    ccamOptions: CCAMOptions,
     worldScenePath?: string,
     callbacks: {
       onDownloadStart?: () => void;
@@ -84,8 +88,7 @@ export class World {
     } = {}
   ) {
     this.target = target;
-    this.windowsStart = windowsStart;
-    this.windowsEnd = windowsEnd;
+    this.ccamOptions = ccamOptions;
 
     // initialize Renderer
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -99,6 +102,7 @@ export class World {
       const { width, height } = target.getBoundingClientRect();
       this.cameras.forEach((camera) => {
         camera.aspect = width / this.cameras.length / height;
+        // if (this.ccamOptions.rotated) camera.aspect = 1 / camera.aspect;
         camera.updateProjectionMatrix();
       });
       this.viewportWidth = width;
@@ -202,7 +206,6 @@ export class World {
       left = i * width;
       // set the renderer viewport / scissor to just this specific camera
       this.renderer.setViewport(left, bottom, width, height);
-      safeLog(left, bottom, width, height);
       this.renderer.setScissor(left, bottom, width, height);
       this.renderer.setScissorTest(true);
       this.renderer.render(this.graphicsWorld, this.cameras[i]);

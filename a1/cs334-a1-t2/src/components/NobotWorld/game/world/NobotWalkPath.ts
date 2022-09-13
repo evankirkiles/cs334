@@ -28,7 +28,6 @@ export class NobotWalkPath implements ISpawnPoint {
 
   /**
    * Spawns the nobot player at this point in the scene
-   * @param loadingManager The loading manager for checking download state
    * @param world The world in which the spawn point exists
    */
   public async spawn(world: World) {

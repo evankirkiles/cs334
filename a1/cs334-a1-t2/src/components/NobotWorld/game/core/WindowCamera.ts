@@ -35,8 +35,7 @@ export class WindowCamera extends THREE.PerspectiveCamera {
     this.object.getWorldDirection(worldDirection);
     this.position.set(worldPos.x, worldPos.y, worldPos.z);
     this.rotation.copy(this.object.rotation);
-    // this.rotation.y = Math.PI * 0.5;
-    // this.rotation.z = Math.PI * -0.5;
+    if (this.world.ccamOptions.rotated) this.rotation.z = Math.PI * -0.5;
     // this.lookAt(root.position);
   }
 }
