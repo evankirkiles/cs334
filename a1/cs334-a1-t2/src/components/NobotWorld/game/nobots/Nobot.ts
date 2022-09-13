@@ -10,8 +10,6 @@ import { GLTF } from "three-stdlib";
 import * as Utils from "../core/FunctionLibrary";
 import { KeyBinding } from "../core/KeyBinding";
 import { EntityType } from "../enums/EntityType";
-import { IControllable } from "../interfaces/IControllable";
-import { IInputReceiver } from "../interfaces/IInputReceiver";
 import { INobotAI } from "../interfaces/INobotAI";
 import { INobotState } from "../interfaces/INobotState";
 import { IWorldEntity } from "../interfaces/IWorldEntity";
@@ -348,72 +346,6 @@ export class Nobot extends THREE.Object3D implements IWorldEntity {
       action.justPressed = false;
       action.justReleased = false;
     }
-  }
-
-  /**
-   * Funnels a keyboard event through to its action handler for the nobot.
-   * @param event The keyboard event passed from an InputManager
-   * @param code The keycode of the button pressed
-   * @param pressed Whether or not the button was pressed or released
-   */
-  public handleKeyboardEvent(
-    event: KeyboardEvent,
-    code: string,
-    pressed: boolean
-  ): void {
-    Object.keys(this.actions).forEach((action) => {
-      if (Object.prototype.hasOwnProperty.call(this.actions, action)) {
-        const binding = this.actions[action];
-        if (_.includes(binding.eventCodes, code)) {
-          this.triggerAction(action, pressed);
-        }
-      }
-    });
-  }
-
-  /**
-   * Funnels a mouse button event through to its action handler for the nobot.
-   * @param event The mouse event passed from an InputManager
-   * @param code The button pressed by the mouse
-   * @param pressed Whether or not the button was pressed or released
-   */
-  public handleMouseButton(
-    event: MouseEvent,
-    code: string,
-    pressed: boolean
-  ): void {
-    Object.keys(this.actions).forEach((action) => {
-      if (Object.prototype.hasOwnProperty.call(this.actions, action)) {
-        const binding = this.actions[action];
-        if (_.includes(binding.eventCodes, code)) {
-          this.triggerAction(action, pressed);
-        }
-      }
-    });
-  }
-
-  /**
-   * Funnels a mouse move event through to its action handler for the nobot.
-   * @param event The mouse event passed from an InputManager
-   * @param deltaX The motion of the mouse on the X axis
-   * @param deltaY The motion of the mouse on the Y axis
-   */
-  public handleMouseMove(
-    event: MouseEvent,
-    deltaX: number,
-    deltaY: number
-  ): void {
-    this.world?.cameraOperator.move(deltaX, deltaY);
-  }
-
-  /**
-   * Funnels a wheel event through to its action handler for the nobot.
-   * @param event The wheel event passed from an InputManager
-   * @param value The deltaY of the wheel move
-   */
-  public handleMouseWheel(event: WheelEvent, value: number): void {
-    // DO SOMETHING WITH SCROLL (ZOOM?)
-    const a = this;
   }
 
   /* -------------------------------------------------------------------------- */

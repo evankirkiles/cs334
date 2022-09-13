@@ -17,7 +17,7 @@ export class InputManager implements IUpdatable {
 
   // is listening to input?
   public isListening: boolean = false;
-  public pointerLock: boolean = true;
+  public pointerLock: boolean = false;
   public isLocked: boolean = false;
 
   // bind listeners
@@ -68,9 +68,6 @@ export class InputManager implements IUpdatable {
    * @param unscaledTimeStep
    */
   public update(timestep: number): void {
-    if (!this.inputReceiver && this.world && this.world.cameraOperator) {
-      this.setInputReceiver(this.world.cameraOperator);
-    }
     this.inputReceiver?.inputReceiverUpdate(timestep);
   }
 

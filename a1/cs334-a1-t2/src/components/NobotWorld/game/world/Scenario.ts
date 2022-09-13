@@ -6,8 +6,10 @@
  */
 import * as THREE from "three";
 import { LoadingManager } from "../core/LoadingManager";
+import { WindowCamera } from "../core/WindowCamera";
 import { ISpawnPoint } from "../interfaces/ISpawnPoint";
 import { NobotSpawnPoint } from "./NobotSpawnPoint";
+import { NobotWalkPath } from "./NobotWalkPath";
 import { World } from "./World";
 
 export class Scenario {
@@ -39,31 +41,46 @@ export class Scenario {
       this.name = root.userData.name;
     if (Object.prototype.hasOwnProperty.call(root.userData, "default"))
       this.default = root.userData.default;
-    if (Object.prototype.hasOwnProperty.call(root.userData, "spawn_always"))
-      this.spawnAlways = root.userData.spawn_always;
-    if (Object.prototype.hasOwnProperty.call(root.userData, "invisible"))
-      this.invisible = root.userData.invisible;
-    if (Object.prototype.hasOwnProperty.call(root.userData, "desc_title"))
-      this.descriptionTitle = root.userData.desc_title;
-    if (Object.prototype.hasOwnProperty.call(root.userData, "desc_content"))
-      this.descriptionContent = root.userData.desc_content;
-    if (Object.prototype.hasOwnProperty.call(root.userData, "camera_angle"))
-      this.initialCameraAngle = root.userData.camera_angle;
 
-    // find scenario spawns and entities
+    // storage for scenario spawns and entries
+    const cameras: WindowCamera[] = [];
+    let entry: THREE.Object3D | undefined = undefined;
+    let exit: THREE.Object3D | undefined = undefined;
     root.traverse((child) => {
+      console.log(child.name);
       if (
         Object.prototype.hasOwnProperty.call(child, "userData") &&
         Object.prototype.hasOwnProperty.call(child.userData, "data")
       ) {
+        // spawn points are paths to walk between
         if (child.userData.data === "spawn") {
-          if (child.userData.type === "player") {
-            const sp = new NobotSpawnPoint(child);
-            this.spawnPoints.push(sp);
+          // should only have one entry and exit pair per scenario
+          if (child.userData.type === "entry") {
+            entry = child;
+            if (exit) {
+              this.spawnPoints.push(new NobotWalkPath(entry, exit));
+            }
+          } else if (child.userData.type === "exit") {
+            exit = child;
+            if (entry) {
+              this.spawnPoints.push(new NobotWalkPath(entry, exit));
+            }
           }
+          // cameras represent views into the scene, to be mapped into the viewport
+        } else if (child.userData.data === "camera") {
+          console.log("GOT A CAMERA");
+          cameras.push(
+            new WindowCamera(child, root, world, parseInt(child.userData.index))
+          );
         }
       }
     });
+
+    // sort the cameras in order, so we render them in order. may need to do
+    // some mapping to fix this functionality. then add them to the world
+    this.world.cameras = cameras.sort(
+      (a, b) => a.window_index - b.window_index
+    );
   }
 
   /**
@@ -71,9 +88,5 @@ export class Scenario {
    */
   public async launch(world: World) {
     await Promise.all(this.spawnPoints.map((sp) => sp.spawn(world)));
-    if (!this.spawnAlways) {
-      world.cameraOperator.theta = this.initialCameraAngle || 0;
-      world.cameraOperator.phi = 15;
-    }
   }
 }

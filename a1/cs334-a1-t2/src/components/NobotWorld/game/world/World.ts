@@ -9,20 +9,25 @@
  */
 import _ from "lodash";
 import * as THREE from "three";
-import { GLTF } from "three-stdlib";
+import { GLTF, RGBELoader } from "three-stdlib";
 import { CameraOperator } from "../core/CameraOperator";
 import * as Utils from "../core/FunctionLibrary";
 import { InputManager } from "../core/InputManager";
 import { LoadingManager } from "../core/LoadingManager";
+import { WindowCamera } from "../core/WindowCamera";
 import { IUpdatable } from "../interfaces/IUpdatable";
 import { IWorldEntity } from "../interfaces/IWorldEntity";
 import { Nobot } from "../nobots/Nobot";
 import { Scenario } from "./Scenario";
 
+const safeLog = _.throttle((...s) => console.log(...s), 1000);
+
 export class World {
   // game properties
   public renderer: THREE.WebGLRenderer;
-  public camera: THREE.PerspectiveCamera;
+  public cameras: WindowCamera[] = [];
+  public viewportWidth: number;
+  public viewportHeight: number;
 
   // world assets
   public graphicsWorld: THREE.Scene;
@@ -49,7 +54,6 @@ export class World {
 
   // custom elements
   public inputManager: InputManager;
-  public cameraOperator: CameraOperator;
   public loadingManager: LoadingManager;
 
   // scenarios
@@ -85,8 +89,12 @@ export class World {
     const onWindowResize = () => {
       // get the size of the canvas for aspect ratio
       const { width, height } = target.getBoundingClientRect();
-      this.camera.aspect = width / height;
-      this.camera.updateProjectionMatrix();
+      this.cameras.forEach((camera) => {
+        camera.aspect = width / this.cameras.length / height;
+        camera.updateProjectionMatrix();
+      });
+      this.viewportWidth = width;
+      this.viewportHeight = height;
       this.renderer.setSize(width, height, false);
     };
     this.listeners.resize = [onWindowResize];
@@ -95,7 +103,8 @@ export class World {
     // THREE.js scene
     this.graphicsWorld = new THREE.Scene();
     const { width, height } = target.getBoundingClientRect();
-    this.camera = new THREE.PerspectiveCamera(80, width / height, 0.1, 1010);
+    this.viewportWidth = width;
+    this.viewportHeight = height;
     onWindowResize();
 
     this.physicsFrameRate = 60;
@@ -111,7 +120,6 @@ export class World {
 
     // initialization
     this.inputManager = new InputManager(this, this.target);
-    this.cameraOperator = new CameraOperator(this, this.camera, 1);
     this.loadingManager = new LoadingManager(this, {
       onStart: callbacks.onDownloadStart,
       onProgress: (p) => console.log(p),
@@ -121,7 +129,8 @@ export class World {
     // load scene if path is supplied
     if (worldScenePath) {
       this.openScene(worldScenePath).then(() => {
-        // begin render cycle once loaded
+        // init cameras once scene loaded, and begin rendering
+        onWindowResize();
         this.render(this);
       });
     }
@@ -176,8 +185,20 @@ export class World {
       this.requestDelta + this.renderDelta + this.logicDelta;
     this.sinceLastFrame %= interval;
 
-    // render the world
-    this.renderer.render(this.graphicsWorld, this.camera);
+    // render each camera onto the canvas
+    let left = 0;
+    const bottom = 0;
+    const width = this.viewportWidth / this.cameras.length;
+    const height = this.viewportHeight;
+    for (let i = 0; i < this.cameras.length; i++) {
+      left = i * width;
+      // set the renderer viewport / scissor to just this specific camera
+      this.renderer.setViewport(left, bottom, width, height);
+      safeLog(left, bottom, width, height);
+      this.renderer.setScissor(left, bottom, width, height);
+      this.renderer.setScissorTest(true);
+      this.renderer.render(this.graphicsWorld, this.cameras[i]);
+    }
     this.renderDelta = this.clock.getDelta();
   }
 
@@ -287,11 +308,6 @@ export class World {
         // check if the child has physics data
         if (Object.prototype.hasOwnProperty.call(child.userData, "data")) {
           switch (child.userData.data) {
-            // userData: WINDOW
-            case "window":
-              //! TODO: add in window managemenet
-              console.log("window is added to scene");
-              break;
             // userData: SCENARIO
             case "scenario":
               this.scenarios.push(new Scenario(child, this));
@@ -307,9 +323,9 @@ export class World {
     this.graphicsWorld.add(gltf.scene);
 
     // add a light to the scene
-    this.graphicsWorld.add(new THREE.AmbientLight(0x0f0f0f));
+    // this.graphicsWorld.add(new THREE.AmbientLight(0x0f0f0f));
     this.graphicsWorld.add(new THREE.HemisphereLight("#76B6E7", "#E7324F"));
-    // this.graphicsWorld.add(new THREE.HemisphereLight('#66B588', '#0D85AA'));
+    // this.graphicsWorld.add(new THREE.HemisphereLight("#66B588", "#0D85AA"));
 
     // find default scenario
     let defaultScenarioID: string | null = null;
