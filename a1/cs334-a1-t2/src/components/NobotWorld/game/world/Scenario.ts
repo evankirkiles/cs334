@@ -78,9 +78,11 @@ export class Scenario {
 
     // sort the cameras in order, so we render them in order. may need to do
     // some mapping to fix this functionality. then add them to the world
-    this.world.cameras = cameras.sort(
-      (a, b) => a.window_index - b.window_index
-    );
+    this.world.cameras = cameras
+      .sort((a, b) => a.window_index - b.window_index)
+      .filter(
+        (_, i) => i >= this.world.windowsStart && i <= this.world.windowsEnd
+      );
   }
 
   /**

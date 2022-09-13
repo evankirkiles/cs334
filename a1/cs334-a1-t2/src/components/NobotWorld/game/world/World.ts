@@ -29,6 +29,10 @@ export class World {
   public viewportWidth: number;
   public viewportHeight: number;
 
+  // CCAM-specific setup
+  public windowsStart: number;
+  public windowsEnd: number;
+
   // world assets
   public graphicsWorld: THREE.Scene;
 
@@ -71,6 +75,8 @@ export class World {
    */
   constructor(
     target: HTMLDivElement,
+    windowsStart: number,
+    windowsEnd: number,
     worldScenePath?: string,
     callbacks: {
       onDownloadStart?: () => void;
@@ -78,6 +84,8 @@ export class World {
     } = {}
   ) {
     this.target = target;
+    this.windowsStart = windowsStart;
+    this.windowsEnd = windowsEnd;
 
     // initialize Renderer
     this.renderer = new THREE.WebGLRenderer({ alpha: true });

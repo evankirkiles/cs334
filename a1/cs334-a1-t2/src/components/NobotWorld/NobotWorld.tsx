@@ -9,16 +9,18 @@ import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { World } from "./game/world/World";
 import s from "./NobotWorld.module.scss";
-import _ from 'lodash';
+import _ from "lodash";
 
 type NobotWorldProps = {
   world: string;
-  screen: "left" | "right";
+  windowsStart: number;
+  windowsEnd: number;
 };
 
 const NobotWorld: React.FC<NobotWorldProps> = function NobotWorld({
   world,
-  screen,
+  windowsStart,
+  windowsEnd,
 }) {
   // connect canvas to game
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -37,10 +39,16 @@ const NobotWorld: React.FC<NobotWorldProps> = function NobotWorld({
 
     if (!canvasRef.current) return;
     // worldRef.current = new World(canvasRef.current!, '/models/world.glb');
-    worldRef.current = new World(canvasRef.current!, world, {
-      onDownloadStart,
-      onDownloadFinish,
-    });
+    worldRef.current = new World(
+      canvasRef.current!,
+      windowsStart,
+      windowsEnd,
+      world,
+      {
+        onDownloadStart,
+        onDownloadFinish,
+      }
+    );
   }, [world]);
 
   return (
