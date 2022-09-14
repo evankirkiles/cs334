@@ -17,10 +17,6 @@ export abstract class NobotStateBase implements INobotState {
   public timer: number;
   public animationLength: any;
 
-  public canFindInteractions: boolean;
-  public canEnterInteraction: boolean;
-  public canLeaveInteraction: boolean;
-
   /**
    * Builds the foundation of a state for a nobot
    * @param nobot The nobot this state applies to
@@ -31,11 +27,6 @@ export abstract class NobotStateBase implements INobotState {
     // set arcade settings
     this.nobot.arcadeVelocityIsAdditive = false;
     this.nobot.setArcadeVelocityInfluence(1, 0, 1);
-
-    // interaction settings
-    this.canFindInteractions = true;
-    this.canEnterInteraction = false;
-    this.canLeaveInteraction = true;
 
     // timer starts at 0
     this.timer = 0;

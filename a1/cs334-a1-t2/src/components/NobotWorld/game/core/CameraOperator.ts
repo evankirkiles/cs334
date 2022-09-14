@@ -4,47 +4,40 @@
  * created on Sat Jun 25 2022
  * 2022 the nobot space,
  */
-import _ from "lodash";
+import _, { xor } from "lodash";
 import * as THREE from "three";
-import { IInputReceiver } from "../interfaces/IInputReceiver";
-import { IUpdatable } from "../interfaces/IUpdatable";
-import { Nobot } from "../nobots/Nobot";
 import { World } from "../world/World";
-import * as Utils from "./FunctionLibrary";
-import { KeyBinding } from "./KeyBinding";
+import { WindowFrame } from "./WindowFrame";
 
-export class CameraOperator implements IInputReceiver, IUpdatable {
+const safeLog = _.throttle((...s) => console.log(...s), 1000);
+
+export class CameraOperator {
   public updateOrder: number = 4;
 
   // scene / world properties
   public world: World;
-  public camera: THREE.Camera;
-  public nobotCaller?: Nobot;
+  public camera: THREE.PerspectiveCamera;
+  public windowFrames: WindowFrame[] = [];
+  public render_frames: number[] = [4, 5, 6];
 
-  // statefuls
-  public target: THREE.Vector3;
-  public sensitivity: THREE.Vector2;
-  public followMode: boolean = true;
+  // dimensions of the viewing plane of the camera.
+  private cX: number;
+  private cLeft: number;
+  private cBottom: number;
+  private cWidth: number;
+  private cHeight: number;
+  // dimensions of a single cell. is always same height as camera.
+  private cCellWidth: number;
 
-  // constraints
-  public movementSpeed: number;
-  public radius: number;
-  public targetRadius: number = 1;
-  public theta: number;
-  public phi: number;
+  // dimensions of the viewport in the DOM
+  private vWidth!: number;
+  private vHeight!: number;
+  // dimensions of a single cell. is always same height as browser window
+  private vCellWidth!: number;
 
-  // free- state
-  public upVelocity: number = 0;
-  public forwardVelocity: number = 0;
-  public rightVelocity: number = 0;
-
-  // mouse interaction
-  public onMouseDownPosition: THREE.Vector2;
-  public onMouseDownTheta: any;
-  public onMouseDownPhi: any;
-
-  // actions & character
-  public actions: { [action: string]: KeyBinding };
+  // internal state managemenet
+  private hFOV: number = 90;
+  private focusPoint!: THREE.Vector3;
 
   /**
    * Constructs a CameraOperator which can be added as an updatable to the world.
@@ -52,239 +45,130 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
    * level of offset from mouse movement based on the mouse position in the canvas.
    * @param world
    * @param camera
-   * @param sensitivityX
-   * @param sensitivityY
    */
   constructor(
     world: World,
-    camera: THREE.Camera,
-    sensitivityX: number = 0.2,
-    sensitivityY: number = sensitivityX * 0.8
+    camera: THREE.PerspectiveCamera,
+    window_frames: WindowFrame[]
   ) {
     // set properties
     this.world = world;
     this.camera = camera;
+    this.windowFrames = window_frames;
 
-    // target holds the target position
-    this.target = new THREE.Vector3();
-
-    // offset state
-    this.movementSpeed = 0.06;
-    this.radius = 3;
-    this.theta = 0;
-    this.phi = 0;
-
-    // mouse interaction
-    this.sensitivity = new THREE.Vector2(sensitivityX, sensitivityY);
-    this.onMouseDownPosition = new THREE.Vector2();
-    this.onMouseDownTheta = this.theta;
-    this.onMouseDownPhi = this.phi;
-
-    // create actions
-    this.actions = {
-      forward: new KeyBinding("KeyW"),
-      back: new KeyBinding("KeyS"),
-      left: new KeyBinding("KeyA"),
-      right: new KeyBinding("KeyD"),
-      up: new KeyBinding("KeyE"),
-      down: new KeyBinding("KeyQ"),
-      fast: new KeyBinding("ShiftLeft"),
-    };
-
-    // add the camera as an updatable
-    world.registerUpdatable(this);
-  }
-
-  /* -------------------------------------------------------------------------- */
-  /*                                  STATEFULS                                 */
-  /* -------------------------------------------------------------------------- */
-
-  /**
-   * Sets the radius, i.e. the distance the camera is from the character
-   * @param value
-   * @param instantly
-   */
-  public setRadius(value: number, instantly: boolean = false): void {
-    this.targetRadius = Math.max(0.001, value);
-    if (instantly === true) {
-      this.radius = value;
+    // decompose the window frames into the actual total width within the scene
+    let zBounds = [Infinity, -Infinity]; // min, max
+    let yBounds = [Infinity, -Infinity]; // min, max
+    for (let i = 0; i < window_frames.length; i++) {
+      zBounds[0] = Math.min(window_frames[i].bbox.min.z, zBounds[0]);
+      zBounds[1] = Math.max(window_frames[i].bbox.max.z, zBounds[1]);
+      yBounds[0] = Math.min(window_frames[i].bbox.min.y, yBounds[0]);
+      yBounds[1] = Math.max(window_frames[i].bbox.max.y, yBounds[1]);
     }
+    // and set these as the camera's position in the ZY . note we do not set the
+    // cell height, as this will be calculated based on the display's cell aspect ratio
+    this.cLeft = zBounds[1];
+    this.cWidth = zBounds[1] - zBounds[0];
+    this.cBottom = yBounds[0];
+    this.cHeight = yBounds[1] - yBounds[0]; // TEMPORARY VALUE
+    this.cX = window_frames[0].object.position.x;
+    const {
+      min: { z: cellMinZ },
+      max: { z: cellMaxZ },
+    } = window_frames[0].bbox;
+    this.cCellWidth = cellMaxZ - cellMinZ;
+
+    // set the focus point of the camera
+    this._calculateFocusPoint();
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                                 UPDATE LOOP                                */
-  /* -------------------------------------------------------------------------- */
-
   /**
-   * Offsets the camera's target from its target.
-   * @param deltaX
-   * @param deltaY
+   * Renders the camera to the screen
+   * @param renderer
    */
-  public move(deltaX: number, deltaY: number): void {
-    this.theta -= deltaX * (this.sensitivity.x / 2);
-    this.theta %= 360;
-    this.phi += deltaY * (this.sensitivity.y / 2);
-    this.phi = Math.min(85, Math.max(-85, this.phi));
-  }
-
-  /**
-   * Runs one step of updating the camera. TODO: add offset
-   */
-  public update(): void {
-    // wwhen following, keep position offset from target
-    if (this.followMode === true) {
-      this.camera.position.y = THREE.MathUtils.clamp(
-        this.camera.position.y,
-        this.target.y,
-        Number.POSITIVE_INFINITY
+  render(renderer: THREE.WebGLRenderer) {
+    // render each frame onto its respective area.
+    for (let i = 0; i < this.render_frames.length; i++) {
+      const frame = this.windowFrames[this.render_frames[i] - 1];
+      const left = i * this.vCellWidth;
+      // safeLog(left, bottom, width, height);
+      // set the renderer viewport / scissor to just this specific camera
+      renderer.setViewport(left, 0, this.vCellWidth, this.vHeight);
+      renderer.setScissor(left, 0, this.vCellWidth, this.vHeight);
+      renderer.setScissorTest(true);
+      this.camera.setViewOffset(
+        this.vWidth,
+        this.vHeight,
+        frame.offsetX,
+        frame.offsetY,
+        this.vCellWidth,
+        this.vHeight
       );
-      this.camera.lookAt(this.target);
-      const newPos = this.target
-        .clone()
-        .add(
-          new THREE.Vector3()
-            .subVectors(this.camera.position, this.target)
-            .normalize()
-            .multiplyScalar(this.targetRadius)
-        );
-      this.camera.position.x = newPos.x;
-      this.camera.position.y = newPos.y;
-      this.camera.position.z = newPos.z;
-      // when free, just calculate the position
-    } else {
-      this.radius = THREE.MathUtils.lerp(this.radius, this.targetRadius, 0.1);
-      this.camera.position.x =
-        this.target.x +
-        this.radius *
-          Math.sin((this.theta * Math.PI) / 180) *
-          Math.cos((this.phi * Math.PI) / 180);
-      this.camera.position.y =
-        this.target.y + this.radius * Math.sin((this.phi * Math.PI) / 180);
-      this.camera.position.z =
-        this.target.z +
-        this.radius *
-          Math.cos((this.theta * Math.PI) / 180) *
-          Math.cos((this.phi * Math.PI) / 180);
-      const diff = new THREE.Vector3()
-        .subVectors(this.camera.position, this.target)
-        .normalize();
-      this.camera.updateMatrix();
-      this.camera.lookAt(this.target);
+      renderer.render(this.world.graphicsWorld, this.camera);
     }
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                                  LISTENERS                                 */
-  /* -------------------------------------------------------------------------- */
-
   /**
-   * Handler for the mouse moving. Use this to provide a slight offset to the
-   * camera from the nobot, but not so much that this would make clicking on
-   * things in the scene difficult.
-   * @param event
-   * @param deltaX
-   * @param deltaY
+   * Sets the point the camera is to look directly at.
+   * @returns
    */
-  public handleMouseMove(
-    event: MouseEvent,
-    deltaX: number,
-    deltaY: number
-  ): void {
-    this.move(deltaX, deltaY);
-  }
-
-  /**
-   * Handler for the mouse scrolling. Use this to zoom in and out the camera,
-   * clamped to prevent zooming too far in.
-   * @param event
-   * @param deltaY
-   */
-  public handleMouseWheel(event: WheelEvent, deltaY: number): void {
-    // TODO: Zoom in the camera
-    // console.log(this);
-    const a = this;
-  }
-
-  /**
-   * Not sure what the mouse handler will be used for. Definitely for clicking
-   * on objects in the scene with raycasting, at least.
-   * @param event
-   * @param code
-   * @param pressed
-   */
-  public handleMouseButton(
-    event: MouseEvent,
-    code: string,
-    pressed: boolean
-  ): void {
-    // TODO: Some mouse click event with the camera
-    Object.keys(this.actions).forEach((action) => {
-      if (Object.prototype.hasOwnProperty.call(this.actions, action)) {
-        const binding = this.actions[action];
-        if (_.includes(binding.eventCodes, code)) {
-          binding.isPressed = pressed;
-        }
-      }
-    });
-  }
-
-  /**
-   * Handle keyboard input to the camera.
-   * @param e
-   * @param code
-   * @param pressed
-   */
-  public handleKeyboardEvent(
-    e: KeyboardEvent,
-    code: string,
-    pressed: boolean
-  ): void {
-    // TODO: Connect keyboard evnets to the camera. Is this character controls?
-    // console.log(this);
-    const a = this;
-  }
-
-  /* -------------------------------------------------------------------------- */
-  /*                               INPUT RECEIVER                               */
-  /* -------------------------------------------------------------------------- */
-
-  /**
-   * Initialize the input receiver, by simply placing the camera in the scene.
-   */
-  public inputReceiverInit(): void {
-    this.target.copy(this.camera.position);
-    this.setRadius(0, true);
-  }
-
-  /**
-   * When the camera is the input receiver, allow it to fly around
-   * @param timeStep
-   */
-  public inputReceiverUpdate(timeStep: number): void {
-    // Set fly speed
-    const speed =
-      this.movementSpeed *
-      (this.actions.fast.isPressed ? timeStep * 600 : timeStep * 60);
-    const up = Utils.getUp(this.camera);
-    const right = Utils.getRight(this.camera);
-    const forward = Utils.getBack(this.camera);
-    this.upVelocity = THREE.MathUtils.lerp(
-      this.upVelocity,
-      +this.actions.up.isPressed - +this.actions.down.isPressed,
-      0.3
+  _calculateFocusPoint() {
+    this.focusPoint = new THREE.Vector3(
+      this.cX,
+      this.cBottom + this.cHeight / 2,
+      this.cLeft - this.cWidth / 2
     );
-    this.forwardVelocity = THREE.MathUtils.lerp(
-      this.forwardVelocity,
-      +this.actions.forward.isPressed - +this.actions.back.isPressed,
-      0.3
-    );
-    this.rightVelocity = THREE.MathUtils.lerp(
-      this.rightVelocity,
-      +this.actions.right.isPressed - +this.actions.left.isPressed,
-      0.3
-    );
-    this.target.add(up.multiplyScalar(speed * this.upVelocity));
-    this.target.add(forward.multiplyScalar(speed * this.forwardVelocity));
-    this.target.add(right.multiplyScalar(speed * this.rightVelocity));
+  }
+
+  /**
+   * Use resize listener to update the camera's aspect ratio / fov.
+   * @param width
+   * @param height
+   */
+  onResize(width: number, height: number) {
+    // get the target aspect ratio of each cell, and calculate the new height
+    this.vCellWidth = width / this.render_frames.length;
+    this.cHeight = this.cCellWidth / (this.vCellWidth / height);
+    // now set the camera's aspect ratio from this
+    this.camera.aspect = this.cWidth / this.cHeight;
+
+    // calculate the camera's FOV from desired hFOV and aspect ratio
+    this.camera.fov =
+      (Math.atan(Math.tan((this.hFOV * Math.PI) / 360) / this.camera.aspect) *
+        360) /
+      Math.PI;
+    console.log(this.camera.fov);
+    // get necessary offset for camera from the viewport
+    const near =
+      this.cHeight / (2 * Math.tan((Math.PI * this.camera.fov) / 360));
+    this.camera.near = near;
+
+    // now move camera up so it captures everything above the scene
+    this._calculateFocusPoint();
+    const nearOffset = new THREE.Vector3(near, 0, 0);
+    this.camera.position.copy(this.focusPoint).add(nearOffset);
+    // for using horizontal aspect ratio, update the projection matrix. i don't
+    // really know what is going on here.
+    let e = this.camera.projectionMatrix.elements;
+    e[5] = this.camera.aspect;
+    e[0] = 1;
+    // make camera look at the focus point
+    this.camera.lookAt(this.focusPoint);
+    // now propogate changes to camera
+    this.camera.updateProjectionMatrix();
+    this.camera.updateMatrixWorld();
+
+    // lastly, update the camera's viewport dimensions
+    this.vHeight = height;
+    this.vWidth = height * this.camera.aspect;
+
+    // iterate over each frame and set its xOffset.
+    for (let i = 0; i < this.windowFrames.length; i++) {
+      this.windowFrames[i].updateViewOffset(
+        this.cLeft,
+        this.cWidth,
+        this.vWidth
+      );
+    }
   }
 }

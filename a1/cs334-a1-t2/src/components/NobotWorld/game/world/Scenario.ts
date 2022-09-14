@@ -5,11 +5,11 @@
  * 2022 the nobot space,
  */
 import * as THREE from "three";
+import { CameraOperator } from "../core/CameraOperator";
 import { LoadingManager } from "../core/LoadingManager";
-import { WindowCamera } from "../core/WindowCamera";
+import { WindowFrame } from "../core/WindowFrame";
 import { ISpawnPoint } from "../interfaces/ISpawnPoint";
-import { NobotSpawnPoint } from "./NobotSpawnPoint";
-import { NobotWalkPath } from "./NobotWalkPath";
+import { NobotManager } from "./NobotManager";
 import { World } from "./World";
 
 export class Scenario {
@@ -25,14 +25,10 @@ export class Scenario {
   public world: World;
 
   // private scenario information
-  private rootNode: THREE.Object3D;
-  private spawnPoints: ISpawnPoint[] = [];
-  private invisible: boolean = false;
-  private initialCameraAngle?: number;
+  private nobotManager: NobotManager;
 
   // build a scenario into the world
   constructor(root: THREE.Object3D, world: World) {
-    this.rootNode = root;
     this.world = world;
     this.id = root.name;
 
@@ -43,11 +39,10 @@ export class Scenario {
       this.default = root.userData.default;
 
     // storage for scenario spawns and entries
-    const cameras: WindowCamera[] = [];
+    let frames: WindowFrame[] = [];
     let entry: THREE.Object3D | undefined = undefined;
     let exit: THREE.Object3D | undefined = undefined;
     root.traverse((child) => {
-      console.log(child.name);
       if (
         Object.prototype.hasOwnProperty.call(child, "userData") &&
         Object.prototype.hasOwnProperty.call(child.userData, "data")
@@ -57,20 +52,17 @@ export class Scenario {
           // should only have one entry and exit pair per scenario
           if (child.userData.type === "entry") {
             entry = child;
-            if (exit) {
-              this.spawnPoints.push(new NobotWalkPath(entry, exit));
-            }
           } else if (child.userData.type === "exit") {
             exit = child;
-            if (entry) {
-              this.spawnPoints.push(new NobotWalkPath(entry, exit));
-            }
           }
           // cameras represent views into the scene, to be mapped into the viewport
         } else if (child.userData.data === "camera") {
-          console.log("GOT A CAMERA");
-          cameras.push(
-            new WindowCamera(child, root, world, parseInt(child.userData.index))
+          frames.push(
+            new WindowFrame(
+              child,
+              parseInt(child.userData.index),
+              parseFloat(child.userData.space_left)
+            )
           );
         }
       }
@@ -78,19 +70,22 @@ export class Scenario {
 
     // sort the cameras in order, so we render them in order. may need to do
     // some mapping to fix this functionality. then add them to the world
-    this.world.cameras = cameras
-      .sort((a, b) => a.window_index - b.window_index)
-      .filter(
-        (_, i) =>
-          i >= this.world.ccamOptions.windowsStart - 1 &&
-          i <= this.world.ccamOptions.windowsEnd - 1
-      );
+    frames = frames.sort((a, b) => a.window_index - b.window_index);
+    this.world.cameraOperator = new CameraOperator(
+      this.world,
+      this.world.camera,
+      frames
+    );
+
+    // add in a single nobot per camera.
+    this.nobotManager = new NobotManager(entry!, exit!, frames.length);
   }
 
   /**
    * Launches the scenario.
    */
   public async launch(world: World) {
-    await Promise.all(this.spawnPoints.map((sp) => sp.spawn(world)));
+    await this.nobotManager.load(world);
+    await this.nobotManager.start(world);
   }
 }

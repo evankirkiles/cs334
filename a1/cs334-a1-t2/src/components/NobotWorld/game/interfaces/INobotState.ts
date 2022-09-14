@@ -5,10 +5,6 @@
  * 2022 the nobot space,
  */
 export interface INobotState {
-  canFindInteractions: boolean;
-  canEnterInteraction: boolean;
-  canLeaveInteraction: boolean;
-
   update(timeStep: number): void;
   onInputChange(): void;
 }

@@ -17,7 +17,6 @@ export class Walk extends NobotStateBase {
    */
   constructor(nobot: Nobot) {
     super(nobot);
-    this.canEnterInteraction = true;
     this.nobot.setArcadeVelocityTarget(0.8);
     this.playAnimation("walk", 0.2);
   }

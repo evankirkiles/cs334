@@ -183,7 +183,7 @@ export class Nobot extends THREE.Object3D implements IWorldEntity {
    */
   public setState(state: INobotState): void {
     this.nobotState = state;
-    this.nobotState.onInputChange();
+    // this.nobotState.onInputChange();
   }
 
   /**
@@ -317,7 +317,6 @@ export class Nobot extends THREE.Object3D implements IWorldEntity {
    */
   public readNobotAnimations(gltf: GLTF): void {
     this.animations = gltf.animations;
-    console.log(this.animations);
   }
 
   /* -------------------------------------------------------------------------- */

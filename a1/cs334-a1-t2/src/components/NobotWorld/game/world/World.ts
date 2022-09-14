@@ -14,13 +14,11 @@ import { CameraOperator } from "../core/CameraOperator";
 import * as Utils from "../core/FunctionLibrary";
 import { InputManager } from "../core/InputManager";
 import { LoadingManager } from "../core/LoadingManager";
-import { WindowCamera } from "../core/WindowCamera";
+import { WindowFrame } from "../core/WindowFrame";
 import { IUpdatable } from "../interfaces/IUpdatable";
 import { IWorldEntity } from "../interfaces/IWorldEntity";
 import { Nobot } from "../nobots/Nobot";
 import { Scenario } from "./Scenario";
-
-const safeLog = _.throttle((...s) => console.log(...s), 1000);
 
 type CCAMOptions = {
   windowsStart: number;
@@ -31,12 +29,13 @@ type CCAMOptions = {
 export class World {
   // game properties
   public renderer: THREE.WebGLRenderer;
-  public cameras: WindowCamera[] = [];
+  public camera: THREE.PerspectiveCamera;
   public viewportWidth: number;
   public viewportHeight: number;
 
   // CCAM-specific setup
   public ccamOptions: CCAMOptions;
+  public cameraOperator?: CameraOperator;
 
   // world assets
   public graphicsWorld: THREE.Scene;
@@ -91,20 +90,23 @@ export class World {
     this.ccamOptions = ccamOptions;
 
     // initialize Renderer
-    this.renderer = new THREE.WebGLRenderer({ alpha: true });
+    this.renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: false,
+      powerPreference: "high-performance",
+    });
     this.renderer.setPixelRatio(0.3);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // initialize camera
+    this.camera = new THREE.PerspectiveCamera();
 
     // set up resizing on window size change
     const onWindowResize = () => {
       // get the size of the canvas for aspect ratio
       const { width, height } = target.getBoundingClientRect();
-      this.cameras.forEach((camera) => {
-        camera.aspect = width / this.cameras.length / height;
-        // if (this.ccamOptions.rotated) camera.aspect = 1 / camera.aspect;
-        camera.updateProjectionMatrix();
-      });
+      this.cameraOperator && this.cameraOperator.onResize(width, height);
       this.viewportWidth = width;
       this.viewportHeight = height;
       this.renderer.setSize(width, height, false);
@@ -198,18 +200,7 @@ export class World {
     this.sinceLastFrame %= interval;
 
     // render each camera onto the canvas
-    let left = 0;
-    const bottom = 0;
-    const width = this.viewportWidth / this.cameras.length;
-    const height = this.viewportHeight;
-    for (let i = 0; i < this.cameras.length; i++) {
-      left = i * width;
-      // set the renderer viewport / scissor to just this specific camera
-      this.renderer.setViewport(left, bottom, width, height);
-      this.renderer.setScissor(left, bottom, width, height);
-      this.renderer.setScissorTest(true);
-      this.renderer.render(this.graphicsWorld, this.cameras[i]);
-    }
+    this.cameraOperator?.render(this.renderer);
     this.renderDelta = this.clock.getDelta();
   }
 

@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <meta name="description" content="a nobot window display." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NobotWorld world={"ccamdisplay"} windowsStart={4} windowsEnd={6} rotated={false} />
+      <NobotWorld world={"ccamdisplay_2"} windowsStart={4} windowsEnd={6} rotated={false} />
     </div>
   );
 };
