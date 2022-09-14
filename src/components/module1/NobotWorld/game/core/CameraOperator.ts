@@ -93,7 +93,6 @@ export class CameraOperator {
       max: { z: cellMaxZ },
     } = window_frames[0].bbox;
     this.cCellWidth = cellMaxZ - cellMinZ;
-    console.log(this);
 
     // set the focus point of the camera
     this._calculateFocusPoint();
@@ -149,16 +148,12 @@ export class CameraOperator {
   }
 
   /**
-   * Use resize listener to update the camera's aspect ratio / fov.
-   * @param width
-   * @param height
+   * Recalculates camera positions, generally after a resize or parameter update.
    */
-  onResize(width: number, height: number) {
+  recalculate() {
     if (!this.rotated) {
       // get the target aspect ratio of each cell, and calculate the new height
-      this.vCellHeight = height;
-      this.vCellWidth = width / this.render_frames.length;
-      this.cHeight = this.cCellWidth / (this.vCellWidth / height);
+      this.cHeight = this.cCellWidth / (this.vCellWidth / this.vCellHeight);
       this.camera.aspect = this.cWidth / this.cHeight;
       // calculate the camera's FOV from desired hFOV and aspect ratio
       this.camera.fov =
@@ -170,9 +165,7 @@ export class CameraOperator {
         this.cHeight / (2 * Math.tan((Math.PI * this.camera.fov) / 360));
       // if rotated, we need to do inverse calculations
     } else {
-      this.vCellHeight = height;
-      this.vCellWidth = width / this.render_frames.length;
-      this.cHeight = this.cCellWidth * (this.vCellWidth / height);
+      this.cHeight = this.cCellWidth * (this.vCellWidth / this.vCellHeight);
       this.camera.aspect = this.cHeight / this.cWidth;
       this.camera.fov = this.hFOV;
       this.camera.near =
@@ -191,19 +184,14 @@ export class CameraOperator {
     }
     this.camera.updateMatrixWorld();
     this.camera.updateProjectionMatrix();
-    console.log(this);
-    console.log(this.focusPoint);
-    console.log("FOV", this.camera.getEffectiveFOV());
-    console.log("FilmWidth", this.camera.getFilmWidth());
-    console.log("FilmHeight", this.camera.getFilmHeight());
 
     if (!this.rotated) {
       // lastly, update the camera's viewport dimensions
-      this.vHeight = height;
-      this.vWidth = height * this.camera.aspect;
+      this.vHeight = this.vCellHeight;
+      this.vWidth = this.vCellHeight * this.camera.aspect;
     } else {
-      this.vWidth = width / this.render_frames.length;
       this.vHeight = this.vWidth / (this.cHeight / this.cWidth);
+      this.vWidth = this.vCellWidth;
     }
 
     // iterate over each frame and set its xOffset.
@@ -214,5 +202,16 @@ export class CameraOperator {
         !this.rotated ? this.vWidth : this.vHeight
       );
     }
+  }
+
+  /**
+   * Use resize listener to update the camera's aspect ratio / fov.
+   * @param width
+   * @param height
+   */
+  onResize(width: number, height: number) {
+    this.vCellHeight = height;
+    this.vCellWidth = width / this.render_frames.length;
+    this.recalculate();
   }
 }

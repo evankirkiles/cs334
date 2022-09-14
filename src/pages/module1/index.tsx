@@ -11,7 +11,7 @@ const Module1HomePage: NextPage = () => {
         <meta name="description" content="a nobot window display." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      evan's leeds display installation will go here.
+      evan&apos;s leeds display installation will go here.
       <Link href="/module1/play">
         click me.
       </Link>

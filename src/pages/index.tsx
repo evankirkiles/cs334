@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Evan's CS334 page!</h1>
+        <h1 className={styles.title}>Welcome to Evan&apos;s CS334 page!</h1>
 
         <p className={styles.description}>
           Get started by clicking a module below.
