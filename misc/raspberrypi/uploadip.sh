@@ -5,7 +5,7 @@ cd ~/Desktop/cs334
 git pull origin master
 
 # 2. get the IP address into the ip.md file
-ifconfig >~/Desktop/cs334/raspberrypi/ip.md
+ifconfig >~/Desktop/cs334/misc/raspberrypi/ip.md
 
 # 2. push to the git repository
 git add -A
