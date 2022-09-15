@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import NobotWorld from "../../components/module1/NobotWorld/NobotWorld";
 import styles from "../../styles/Home.module.scss";
 
-const WINDOW_MAPPING = [[3, 2, 1], [6, 5, 4], [1, 2, 3, 4, 5, 6], [6, 5, 4, 3, 2, 1]];
+const WINDOW_MAPPING = [[1, 2, 3], [4, 5, 6], [3, 2, 1], [6, 5, 4]];
 
 const Module1PlayPage: NextPage = () => {
 
@@ -46,6 +46,7 @@ const Module1PlayPage: NextPage = () => {
         world={"ccamdisplay_2"}
         render_frames={WINDOW_MAPPING[currWindowTrio]}
         rotated={rotated}
+        distance_back={0.5}
       />
     </div>
   );

@@ -142,7 +142,7 @@ export class CameraOperator {
   _calculateFocusPoint() {
     this.focusPoint = new THREE.Vector3(
       this.cX,
-      this.cBottom + this.cHeight / 2,
+      this.cBottom + this.cHeight / 2 + 1,
       this.cLeft - this.cWidth / 2
     );
   }
@@ -173,7 +173,7 @@ export class CameraOperator {
     }
     // now move camera up so it captures everything above the scene
     this._calculateFocusPoint();
-    const nearOffset = new THREE.Vector3(this.distance_back, 0, 0);
+    const nearOffset = new THREE.Vector3(this.camera.near, 0, 0);
     this.camera.position.copy(this.focusPoint).add(nearOffset);
 
     // make camera look at the focus point
