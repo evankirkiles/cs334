@@ -18,7 +18,7 @@ const Module1HomePage: NextPage = () => {
           <h3 className={s.subtitle}>Generative Art</h3>
           <div className={s.row}>
             <div className={s.row_item}>by evan kirkiles</div>
-            <div className={s.row_item}>Sep 21, 2022</div>
+            <div className={s.row_item}>Sep 20, 2022</div>
           </div>
           <div className={s.text}>
             welcome to evan&apos;s cs334 assignment 1, a little scene in which
