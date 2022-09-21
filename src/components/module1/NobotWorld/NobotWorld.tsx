@@ -61,6 +61,7 @@ const NobotWorld: React.FC<NobotWorldProps & CCAMOptions> =
     }, [
       world,
       overlayActive,
+      ccamOptions,
       ccamOptions.rotated,
       ccamOptions.render_frames,
       ccamOptions.distance_back,

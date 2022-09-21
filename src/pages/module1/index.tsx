@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import s from "../../styles/Module1.module.scss";
-import YouTube from 'react-youtube';
+import YouTube from "react-youtube";
 
 const Module1HomePage: NextPage = () => {
   return (
@@ -33,7 +33,6 @@ const Module1HomePage: NextPage = () => {
           </Link>
         </div>
         <div className={s.control_container}>
-          {" "}
           <div className={s.setup_text}>1. SETUP</div>
           <div className={s.text}>
             to get the project setup on the Leeds display, you first need to
@@ -67,13 +66,13 @@ const Module1HomePage: NextPage = () => {
           <div className={s.control_row}>
             <div className={s.row_item}>1</div>
             <div className={s.row_control_descriptor}>
-              - display "first" three panes from right
+              - display &quot;first&quot; three panes from right
             </div>
           </div>
           <div className={s.control_row}>
             <div className={s.row_item}>2</div>
             <div className={s.row_control_descriptor}>
-              - display "second" three panes from right
+              - display &quot;second&quot; three panes from right
             </div>
           </div>
           <div className={s.control_row}>
@@ -83,8 +82,8 @@ const Module1HomePage: NextPage = () => {
             </div>
           </div>
           <div className={s.text}>
-            make sure that you've actually clicked in a window before using any
-            controls so that they key events are sent to the browser. you'll need
+            make sure that you&apos;ve actually clicked in a window before using any
+            controls so that they key events are sent to the browser. you&apos;ll need
             to press 1 in the rightmost browser window, and 2 in the leftmost. as well
             as R in both to rotate the displays. then you should be good!
           </div>
