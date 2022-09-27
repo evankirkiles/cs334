@@ -1,0 +1,52 @@
+@import "../../styles/mixins";
+
+.main {
+  border: 1px solid $foreground2;
+  padding: 20px;
+  background-color: $background;
+  max-width: 600px;
+}
+
+.container {
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @include respond-to("small") {
+    padding: 10vh 20px;
+  }
+}
+
+.overlay {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  border: 1px dashed $foreground2;
+  opacity: 0.5;
+  top: 10px;
+  left: 10px;
+  width: calc(100vw - 20px);
+  height: calc(100vh - 20px);
+}
+
+.home_button {
+  position: fixed;
+  z-index: 3;
+  top: 30px;
+  left: 30px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  border: 1px solid $foreground;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    transform: scale(1.1) rotate(-10deg);
+  }
+}

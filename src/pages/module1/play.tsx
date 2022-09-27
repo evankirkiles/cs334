@@ -52,4 +52,6 @@ const Module1PlayPage: NextPage = () => {
   );
 };
 
+(Module1PlayPage as any).getLayout = (page: React.ReactNode) => page;
+
 export default Module1PlayPage;
