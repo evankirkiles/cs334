@@ -5,6 +5,9 @@
  * 2022 the nobot space,
  */
 import { useCallback, useEffect, useState } from "react";
+import SocketControllerMinigame, {
+  SocketControllerState,
+} from "../SocketControllerMinigame/SocketControllerMinigame";
 import s from "./SocketControllerDisplay.module.scss";
 
 // helper function for converting joystick input into a CSS transform
@@ -157,6 +160,9 @@ const SocketControllerDisplay: React.FC<SocketControllerDisplayProps> =
             <></>
           )}
         </div>
+        <SocketControllerMinigame
+          state={controllerState as SocketControllerState}
+        />
       </>
     );
   };

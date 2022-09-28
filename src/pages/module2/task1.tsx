@@ -36,7 +36,7 @@ const Module1HomePage: NextPage = () => {
           the raspi controller&apos;s client code. this one uses a button, switch,
           and (analog-only) joystick, but we can remove any of those.
         </div>
-        <YouTube videoId="21Y6QOtT9R0" className={s.youtubeContainer} />
+        <YouTube videoId="PcUaTRtYxaw" className={s.youtubeContainer} />
       </div>
       <div className={s.control_container}>
         <div className={s.setup_text}>1. SETUP</div>

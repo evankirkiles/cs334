@@ -1,0 +1,45 @@
+@import "../../../styles/mixins";
+
+.sensor_fun_canvas {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  padding: 10px;
+  border: 1px solid $foreground;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+
+  background-color: $background;
+  background-image: radial-gradient($foreground2 0.5px, transparent 0.5px),
+    radial-gradient($foreground2 0.5px, $background 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+.fun_player {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.control_text {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 12px;
+  font-style: italic;
+  z-index: 2;
+  color: $foreground;
+}
+
+.sub_controls_text {
+  @extend .control_text;
+  top: 25px;
+  font-size: 10px;
+  opacity: 0.5;
+  text-align: left;
+}
