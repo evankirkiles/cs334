@@ -78,20 +78,18 @@ const SocketControllerDisplay: React.FC<SocketControllerDisplayProps> =
       } else {
         ws = wsInstance;
       }
-      // add listener
-      ws.onmessage = updateInputState;
       return () => {
         if (wsInstance && wsInstance.readyState !== 3) {
           wsInstance.close();
         }
       };
-    }, []);
+    }, [url, wsInstance]);
 
     // update the listener when stale
     useEffect(() => {
       if (!wsInstance) return;
       wsInstance.onmessage = updateInputState;
-    }, [updateInputState]);
+    }, [updateInputState, wsInstance]);
 
     return (
       <>

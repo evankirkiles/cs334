@@ -32,8 +32,8 @@ const Module1HomePage: NextPage = () => {
         <SocketControllerDisplay url={WEBSOCKET_URL} />
         <div className={s.text}>
           has the potential to support and display any number of GPIO sensors
-          supplied, defined solely by the initial "state" message retrieved from
-          the raspi controller's client code. this one uses a button, switch,
+          supplied, defined solely by the initial &quot;state&quot; message retrieved from
+          the raspi controller&apos;s client code. this one uses a button, switch,
           and (analog-only) joystick, but we can remove any of those.
         </div>
         <YouTube videoId="21Y6QOtT9R0" className={s.youtubeContainer} />
@@ -60,7 +60,7 @@ const Module1HomePage: NextPage = () => {
         <div className={s.text}>
           download the websocket pi client and modify{" "}
           <span className={s.code}>__main__.py</span> to reflect the websocket
-          server's URI and your GPIO input sensors using the{" "}
+          server&apos;s URI and your GPIO input sensors using the{" "}
           <span className={s.code}>input_types.py</span> input types.
         </div>
         <a
