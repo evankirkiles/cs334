@@ -48,29 +48,44 @@ const Module1HomePage: NextPage = () => {
           access the ws server publicly, or on your local network, from, e.g.{" "}
           <span className={s.code}>ws://localhost:3000/</span>.
         </div>
-        <div className={s.remote_link}>
+        <a
+          className={s.remote_link}
+          href="https://github.com/evankirkiles/cs334/tree/master/misc/module2/task1/ws-server"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           websocket server code
           <HiOutlineExternalLink />
-        </div>
+        </a>
         <div className={s.text}>
           download the websocket pi client and modify{" "}
           <span className={s.code}>__main__.py</span> to reflect the websocket
           server's URI and your GPIO input sensors using the{" "}
           <span className={s.code}>input_types.py</span> input types.
         </div>
-        <div className={s.remote_link}>
+        <a
+          className={s.remote_link}
+          href="https://github.com/evankirkiles/cs334.pi/tree/master/src/module2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           websocket pi client code
           <HiOutlineExternalLink />
-        </div>
+        </a>
         <div className={s.text}>
           now, you can listen to messages from the websocket server to get state
           updates from your controller! an example is live above, which you can
           view the code for.
         </div>
-        <div className={s.remote_link}>
+        <a
+          className={s.remote_link}
+          href="https://github.com/evankirkiles/cs334/blob/master/src/components/module2/SocketControllerDisplay/SocketControllerDisplay.tsx"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           websocket consumer client code
           <HiOutlineExternalLink />
-        </div>
+        </a>
       </div>
       <div className={s.control_container}>
         {" "}
