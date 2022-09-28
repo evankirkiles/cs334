@@ -1,3 +1,5 @@
+@import "../styles/mixins";
+
 .container {
   display: flex;
   flex-direction: column;
@@ -107,6 +109,7 @@
   border-bottom: 1px solid #303030;
   padding: 5px;
   opacity: 0.5;
+  margin-top: 10px;
 }
 
 .control_container {
@@ -114,7 +117,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   width: 100%;
   text-align: left;
 }
@@ -126,4 +129,37 @@
   padding-bottom: 56.25%;
   overflow: hidden;
   border: 1px solid #303030;
+}
+
+.code {
+  display: inline-block;
+  background-color: $background2;
+  border-radius: 5px;
+  color: $foreground2;
+  padding: 3px 5px;
+  font-family: "FT88 Serif";
+  letter-spacing: 0px;
+}
+
+.remote_link {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+  gap: 10px;
+  cursor: pointer;
+  transform-origin: 0% 50%;
+  transition: transform 0.1s ease-in-out;
+  color: $foreground2;
+
+  &:hover {
+    transform: scaleX(1.1);
+  }
+
+  &:before {
+    content: ">";
+    // color: $background2;
+  }
 }

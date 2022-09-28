@@ -14,7 +14,7 @@ const Module1HomePage: NextPage = () => {
       </Head>
       <div className={s.control_container} style={{ textAlign: "center" }}>
         <h1 className={s.header}>Task 2</h1>
-        <h3 className={s.subtitle}>Generative Art</h3>
+        <h3 className={s.subtitle}>M1: Generative Art</h3>
         <div className={s.row}>
           <div className={s.row_item}>by evan kirkiles</div>
           <div className={s.row_item}>Sep 20, 2022</div>

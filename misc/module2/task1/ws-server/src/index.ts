@@ -15,13 +15,12 @@ const wss = new Server({ server });
 wss.on("connection", (ws) => {
   // producer refers to the controller
   console.log("Client connected");
-  ws.on("message", (data) => console.log(data.toString()));
+  // broadcast all received messages to all clients
+  ws.on("message", (data) => {
+    console.log(data.toString());
+    wss.clients.forEach((client) => {
+      client.send(data.toString());
+    });
+  });
   ws.on("close", () => console.log("Client disconnected"));
 });
-
-// every 1 second, send client the date
-setInterval(() => {
-  wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
-  });
-}, 1000);

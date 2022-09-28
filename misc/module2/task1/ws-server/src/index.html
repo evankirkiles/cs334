@@ -6,12 +6,12 @@
       var el;
 
       ws.onmessage = function (event) {
-        el = document.getElementById("server-time");
-        el.innerHTML = "Server time: " + event.data;
+        el = document.getElementById("data");
+        el.innerHTML = "Most recent data: " + event.data;
       };
     </script>
   </head>
   <body>
-    <div id="server-time">not yet set</div>
+    <div id="data">not yet supplied</div>
   </body>
 </html>

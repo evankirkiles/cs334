@@ -24,7 +24,8 @@ const Home: NextPage = () => {
       <h3 className={styles.subtitle}>Instructor: Scott Petersen</h3>
       <h3 className={styles.subtitle}>TF: Mike Winch</h3>
       <p className={styles.description}>
-        Get started by clicking a module below.
+        Get started by clicking a module below. Each describes an assignment
+        and the tasks completed within that module.
       </p>
       <div className={styles.grid}>
         <div className={styles.module_container}>
@@ -58,8 +59,8 @@ const Home: NextPage = () => {
             </a>
           </Link>
           <div className={styles.task_row}>
-            <Link href="/module2/task3">
-              <div className={styles.task_button}>Task 3</div>
+            <Link href="/module2/task1">
+              <div className={styles.task_button}>Task 1</div>
             </Link>
           </div>
         </div>
