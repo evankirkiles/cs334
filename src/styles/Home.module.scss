@@ -11,9 +11,13 @@
 .title {
   font-family: "FT88 Gothic";
   margin-bottom: 10px;
-  font-size: 100px;
+  font-size: 70px;
   text-align: center;
   margin-top: 20px;
+
+  @include respond-to("small") {
+    font-size: 100px;
+  }
 }
 
 .title2 {
