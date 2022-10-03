@@ -1,0 +1,1070 @@
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (742) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (742) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (772) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (772) wifi:security: WPA2-PSK, phy: bgn, rssi: -53
+I (782) wifi:pm start, type: 1
+
+I (842) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (2032) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (2032) nobot wifi station: got ip:10.0.0.30
+I (2032) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (732) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (752) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (782) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (782) wifi:security: WPA2-PSK, phy: bgn, rssi: -52
+I (792) wifi:pm start, type: 1
+
+I (832) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (1532) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (1532) nobot wifi station: got ip:10.0.0.30
+I (1532) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (742) nobot wifi station: wifi_init_sta finished.
+I (822) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (822) wifi:state: init -> auth (b0)
+I (832) wifi:state: auth -> assoc (0)
+I (842) wifi:state: assoc -> run (10)
+I (872) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (882) wifi:security: WPA2-PSK, phy: bgn, rssi: -52
+I (882) wifi:pm start, type: 1
+
+I (922) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (1532) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (1532) nobot wifi station: got ip:10.0.0.30
+I (1532) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (742) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (752) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (782) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (782) wifi:security: WPA2-PSK, phy: bgn, rssi: -48
+I (782) wifi:pm start, type: 1
+
+I (802) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (1532) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (1532) nobot wifi station: got ip:10.0.0.30
+I (1532) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (732) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (742) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (782) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (782) wifi:security: WPA2-PSK, phy: bgn, rssi: -50
+I (792) wifi:pm start, type: 1
+
+I (792) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (1532) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (1532) nobot wifi station: got ip:10.0.0.30
+I (1532) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (742) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (742) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (782) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (782) wifi:security: WPA2-PSK, phy: bgn, rssi: -50
+I (792) wifi:pm start, type: 1
+
+I (872) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (1532) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (1532) nobot wifi station: got ip:10.0.0.30
+I (1532) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (732) nobot wifi station: wifi_init_sta finished.
+I (752) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (752) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (782) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (782) wifi:security: WPA2-PSK, phy: bgn, rssi: -51
+I (792) wifi:pm start, type: 1
+
+I (852) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (2032) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (2032) nobot wifi station: got ip:10.0.0.30
+I (2032) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (732) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (752) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (762) wifi:state: assoc -> run (10)
+I (782) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (782) wifi:security: WPA2-PSK, phy: bgn, rssi: -52
+I (792) wifi:pm start, type: 1
+
+I (842) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (1532) esp_netif_handlers: sta ip: 10.0.0.30, mask: 255.255.255.0, gw: 10.0.0.1
+I (1532) nobot wifi station: got ip:10.0.0.30
+I (1532) nobot wifi station: connected to ap SSID:Green Haus password:Bluehouse
+
+assert failed: xQueueSemaphoreTake queue.c:1545 (( pxQueue ))
+
+
+Backtrace:0x40081ac2:0x3ffba1800x400884fd:0x3ffba1a0 0x4008f639:0x3ffba1c0 0x400893aa:0x3ffba2e0 0x400d5fba:0x3ffba320 0x400d5ec0:0x3ffba340 0x4013e3f8:0x3ffba360 0x4008bb75:0x3ffba380 
+0x40081ac2: panic_abort at /Users/evan/esp/esp-idf/components/esp_system/panic.c:402
+
+0x400884fd: esp_system_abort at /Users/evan/esp/esp-idf/components/esp_system/esp_system.c:128
+
+0x4008f639: __assert_func at /Users/evan/esp/esp-idf/components/newlib/assert.c:85
+
+0x400893aa: xQueueSemaphoreTake at /Users/evan/esp/esp-idf/components/freertos/queue.c:1545 (discriminator 1)
+
+0x400d5fba: websocket_client_stop at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/wifi_ws_client.c:118
+
+0x400d5ec0: app_main at /Users/evan/Desktop/yale/cs334/misc/module2/task2/nobot_esp32_controller/main/controller_main.c:144 (discriminator 15)
+
+0x4013e3f8: main_task at /Users/evan/esp/esp-idf/components/freertos/port/port_common.c:141 (discriminator 2)
+
+0x4008bb75: vPortTaskWrapper at /Users/evan/esp/esp-idf/components/freertos/port/xtensa/port.c:131
+
+
+
+
+
+ELF file SHA256: 51e1dcc4a59f408f
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6664
+load:0x40078000,len:14848
+load:0x40080400,len:3792
+0x40080400: _init at ??:?
+
+entry 0x40080694
+I (27) boot: ESP-IDF v4.4.2-dirty 2nd stage bootloader
+I (27) boot: compile time 14:52:13
+I (27) boot: chip revision: 1
+I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (82) boot:  2 factory          factory app      00 00 00010000 00100000
+I (90) boot: End of partition table
+I (94) boot_comm: chip revision: 1, min. application chip revision: 0
+I (101) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=143d0h ( 82896) map
+I (140) esp_image: segment 1: paddr=000243f8 vaddr=3ffb0000 size=03834h ( 14388) load
+I (146) esp_image: segment 2: paddr=00027c34 vaddr=40080000 size=083e4h ( 33764) load
+I (160) esp_image: segment 3: paddr=00030020 vaddr=400d0020 size=6fc08h (457736) map
+I (326) esp_image: segment 4: paddr=0009fc30 vaddr=400883e4 size=0c68ch ( 50828) load
+I (347) esp_image: segment 5: paddr=000ac2c4 vaddr=50000000 size=00010h (    16) load
+I (357) boot: Loaded app from partition at offset 0x10000
+I (357) boot: Disabling RNG early entropy source...
+I (369) cpu_start: Pro cpu up.
+I (369) cpu_start: Starting app cpu, entry point is 0x400811fc
+0x400811fc: call_start_cpu1 at /Users/evan/esp/esp-idf/components/esp_system/port/cpu_start.c:160
+
+I (356) cpu_start: App cpu up.
+I (384) cpu_start: Pro cpu start user code
+I (384) cpu_start: cpu freq: 160000000
+I (384) cpu_start: Application information:
+I (388) cpu_start: Project name:     nobot_controller
+I (394) cpu_start: App version:      39b43760-dirty
+I (399) cpu_start: Compile time:     Oct  2 2022 14:51:36
+I (406) cpu_start: ELF file SHA256:  51e1dcc4a59f408f...
+I (412) cpu_start: ESP-IDF:          v4.4.2-dirty
+I (417) heap_init: Initializing. RAM available for dynamic allocation:
+I (424) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (430) heap_init: At 3FFB7648 len 000289B8 (162 KiB): DRAM
+I (436) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (443) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (449) heap_init: At 40094A70 len 0000B590 (45 KiB): IRAM
+I (457) spi_flash: detected chip: generic
+I (460) spi_flash: flash io: dio
+I (465) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+I (542) wifi:wifi driver task: 3ffc0b98, prio:23, stack:6656, core=0
+I (542) system_api: Base MAC address is not set
+I (542) system_api: read default base MAC address from EFUSE
+I (562) wifi:wifi firmware version: eeaa27d
+I (562) wifi:wifi certification version: v7.0
+I (562) wifi:config NVS flash: enabled
+I (562) wifi:config nano formating: disabled
+I (562) wifi:Init data frame dynamic rx buffer num: 32
+I (572) wifi:Init management frame dynamic rx buffer num: 32
+I (572) wifi:Init management short buffer num: 32
+I (582) wifi:Init dynamic tx buffer num: 32
+I (582) wifi:Init static rx buffer size: 1600
+I (582) wifi:Init static rx buffer num: 10
+I (592) wifi:Init dynamic rx buffer num: 32
+I (592) wifi_init: rx ba win: 6
+I (602) wifi_init: tcpip mbox: 32
+I (602) wifi_init: udp mbox: 6
+I (602) wifi_init: tcp mbox: 6
+I (612) wifi_init: tcp tx win: 5744
+I (612) wifi_init: tcp rx win: 5744
+I (622) wifi_init: tcp mss: 1440
+I (622) wifi_init: WiFi IRAM OP enabled
+I (622) wifi_init: WiFi RX IRAM OP enabled
+I (632) phy_init: phy_version 4670,719f9f6,Feb 18 2021,17:07:07
+I (732) wifi:mode : sta (e8:68:e7:30:28:60)
+I (732) wifi:enable tsf
+I (732) nobot wifi station: wifi_init_sta finished.
+I (742) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (742) wifi:state: init -> auth (b0)
+I (752) wifi:state: auth -> assoc (0)
+I (772) wifi:state: assoc -> run (10)
+I (792) wifi:connected with Green Haus, aid = 4, channel 11, BW20, bssid = 1c:93:7c:d0:08:4f
+I (792) wifi:security: WPA2-PSK, phy: bgn, rssi: -51
+I (792) wifi:pm start, type: 1
+
+I (832) wifi:AP's beacon interval = 102400 us, DTIM period = 1
