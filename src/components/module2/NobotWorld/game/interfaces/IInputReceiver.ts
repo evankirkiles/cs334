@@ -5,7 +5,13 @@
  * 2022 the nobot space,
  */
 
-import { KeyBinding } from '../core/KeyBinding';
+import { KeyBinding } from "../core/KeyBinding";
+
+export type ControllerState = {
+  buttons: number;
+  js_x: number;
+  js_y: number;
+};
 
 export interface IInputReceiver {
   actions: { [action: string]: KeyBinding };
@@ -15,6 +21,7 @@ export interface IInputReceiver {
   handleMouseButton(event: MouseEvent, code: string, pressed: boolean): void;
   handleMouseMove(event: MouseEvent, deltaX: number, deltaY: number): void;
   handleMouseWheel(event: WheelEvent, value: number): void;
+  handleController(state: ControllerState): void;
 
   // initialization and updating
   inputReceiverInit(): void;

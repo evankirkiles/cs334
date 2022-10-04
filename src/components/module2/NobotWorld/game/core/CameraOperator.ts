@@ -7,7 +7,7 @@
 import _ from "lodash";
 import * as THREE from "three";
 import { acceleratedRaycast } from "three-mesh-bvh";
-import { IInputReceiver } from "../interfaces/IInputReceiver";
+import { ControllerState, IInputReceiver } from "../interfaces/IInputReceiver";
 import { IUpdatable } from "../interfaces/IUpdatable";
 import { Character } from "../character/Character";
 import { World } from "../world/World";
@@ -284,6 +284,16 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
   ): void {
     // TODO: Connect keyboard evnets to the camera. Is this character controls?
     // console.log(this);
+    const a = this;
+  }
+
+  /**
+   * Handle controller input to the camera.
+   * @param e
+   * @param code
+   * @param pressed
+   */
+  handleController(state: ControllerState): void {
     const a = this;
   }
 

@@ -7,7 +7,7 @@
 import * as THREE from "three";
 import { Character } from "../character/Character";
 import { KeyBinding } from "../core/KeyBinding";
-import { IInputReceiver } from "../interfaces/IInputReceiver";
+import { ControllerState, IInputReceiver } from "../interfaces/IInputReceiver";
 import { IUpdatable } from "../interfaces/IUpdatable";
 import { IWorldEntity } from "../interfaces/IWorldEntity";
 import { EntityType } from "../enums/EntityType";
@@ -140,8 +140,13 @@ export class Conversation implements IWorldEntity, IInputReceiver {
       }
     });
   }
+
   handleMouseButton(event: MouseEvent, code: string, pressed: boolean): void {
     return;
+  }
+
+  handleController(state: ControllerState): void {
+    const a = this;
   }
 
   /**

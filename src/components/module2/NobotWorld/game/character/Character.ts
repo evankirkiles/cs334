@@ -13,7 +13,7 @@ import { KeyBinding } from "../core/KeyBinding";
 import { CollisionGroups } from "../enums/CollisionGroups";
 import { EntityType } from "../enums/EntityType";
 import { IControllable } from "../interfaces/IControllable";
-import { IInputReceiver } from "../interfaces/IInputReceiver";
+import { ControllerState, IInputReceiver } from "../interfaces/IInputReceiver";
 import { ICharacterAI } from "../interfaces/ICharacterAI";
 import { ICharacterState } from "../interfaces/ICharacterState";
 import { IWorldEntity } from "../interfaces/IWorldEntity";
@@ -810,6 +810,20 @@ export class Character
    */
   public handleMouseWheel(event: WheelEvent, deltaY: number): void {
     this.world?.cameraOperator.zoom(deltaY);
+  }
+
+  /**
+   * Funnels a controller state input into the character.
+   * @param event The wheel event passed from an InputManager
+   * @param value The deltaY of the wheel move
+   */
+  handleController(state: ControllerState): void {
+    this.triggerAction("left", state.js_x > 0.05);
+    this.triggerAction("right", state.js_x < -0.05);
+    this.triggerAction("down", state.js_y > 0.05);
+    this.triggerAction("up", state.js_y < -0.05);
+    this.triggerAction("jump", state.buttons == 1);
+    this.triggerAction("use", state.buttons == 3);
   }
 
   /* -------------------------------------------------------------------------- */

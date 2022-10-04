@@ -4,9 +4,12 @@
  * created on Sat Jun 25 2022
  * 2022 the nobot space,
  */
-import { IInputReceiver } from "../interfaces/IInputReceiver";
+import { ControllerState, IInputReceiver } from "../interfaces/IInputReceiver";
 import { IUpdatable } from "../interfaces/IUpdatable";
 import { World } from "../world/World";
+
+const CONTROLLER_SOCKET_URL =
+  "ws://96de-2601-18a-c681-c9a0-10a3-f75c-e629-7a61.ngrok.io/";
 
 export class InputManager implements IUpdatable {
   public updateOrder: number = 3;
@@ -14,6 +17,9 @@ export class InputManager implements IUpdatable {
   // reference to the world and target
   public world: World;
   public domElement: HTMLElement;
+
+  // reference to socket taking controller input
+  public ws?: WebSocket;
 
   // is listening to input?
   public isListening: boolean = false;
@@ -117,6 +123,25 @@ export class InputManager implements IUpdatable {
       this.boundOnPointerlockError,
       false
     );
+
+    // Controller––starts a websocket interface, attempting to listen
+    this.ws = new WebSocket(CONTROLLER_SOCKET_URL);
+    this.ws.onopen = () => {
+      this.ws!.send(JSON.stringify({ type: "client_type", data: "consumer" }));
+    };
+    this.ws.onmessage = ({ data: body }: { data: string }) => {
+      const data = JSON.parse(body);
+      // on any controller list sent, immediately connect to first controller
+      if (data.type === "controller_list") {
+        this.ws!.send(
+          JSON.stringify({ type: "connect_to_controller", data: data.data[0] })
+        );
+      }
+      // on controller input states, simply funnel them into the input receivers
+      if (data.type === "controller_state") {
+        this.onControllerState(data.data);
+      }
+    };
   }
 
   /**
@@ -241,6 +266,16 @@ export class InputManager implements IUpdatable {
   public onMouseWheelMove(event: WheelEvent): void {
     if (this.inputReceiver)
       this.inputReceiver.handleMouseWheel(event, event.deltaY);
+  }
+
+  /* ------------------------------- CONTROLLER ------------------------------- */
+
+  /**
+   * Funnels controller state events through to the input receiver.
+   * @param state A Controller state
+   */
+  public onControllerState(state: ControllerState): void {
+    if (this.inputReceiver) this.inputReceiver.handleController(state);
   }
 
   /* -------------------------------------------------------------------------- */
