@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <script>
+      var HOST = location.origin.replace(/^http/, "ws");
+      var ws = new WebSocket(HOST);
+      var el;
+
+      ws.onmessage = function (event) {
+        el = document.getElementById("data");
+        el.innerHTML = "Most recent data: " + event.data;
+      };
+    </script>
+  </head>
+  <body>
+    <div id="data">not yet supplied</div>
+  </body>
+</html>

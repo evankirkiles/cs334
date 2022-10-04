@@ -6,6 +6,8 @@
  */
 #include <inttypes.h>
 #include <stdio.h>
+#include <math.h>
+#include <string.h>
 
 #include "driver/adc.h"
 #include "driver/gpio.h"
@@ -25,6 +27,8 @@
 #include "wifi_ws_client.h"
 
 #define NOBOT_CONTROLLER_TAG "nobot controller"
+
+#define JOYSTICK_DEADZONE 0.05
 
 /* ----------------------------- JOYSTICK INPUT ----------------------------- */
 
@@ -64,9 +68,8 @@ static uint8_t readJoystickChannel(adc1_channel_t channel) {
  */
 static void read_controller_task(void *pvParameter) {
   // INPUT: joystick
-  uint8_t js_x, js_y;     // joystick x and y
-  uint32_t current_sum;   // encoding of joystick input to checksum
-  uint32_t last_sum = 0;  // previous joystick input
+  double js_x, js_y;                    // joystick x and y
+  double last_js_x = 0, last_js_y = 0;  // previous joystick x and y
 
   // INPUT: buttons
   uint16_t buttons = 0;       // button inputs
@@ -83,22 +86,33 @@ static void read_controller_task(void *pvParameter) {
       buttons = ev.state;
     }
 
-    // read in joystick axis input from the ESP32 ADC channels 4 and 5
-    js_x = readJoystickChannel(ADC1_CHANNEL_5);
-    js_y = readJoystickChannel(ADC1_CHANNEL_4);
-    // encode the above into a single checksum number
-    current_sum = (js_x << 8) + js_y;
+    // read in joystick axis input from the ESP32 ADC channels 4 and 5.
+    // note that the joystick we use has 5V analog output, but our ADC only handles
+    // up to 3.5V input, mapped from 0-255. so the resting position on each axis
+    // of 2.5V actually maps to (2.5/3.5)*255 = 182. Therefore, higher X and Y
+    // values actually just get cut off at 255––there are 180 states dedicated to
+    // lower-voltage positions, and only 75 dedicated to higher, with voltages
+    // higher than 3.5V simply capping the ADC at 255. There's no real way around
+    // this with our hardware, so we kind of have to make do.
+    double steps = 0xFF;
+    js_x = (3.5 / 2.5) * ((readJoystickChannel(ADC1_CHANNEL_5) / steps) - (2.5 / 3.5));
+    js_y = (3.5 / 2.5) * ((readJoystickChannel(ADC1_CHANNEL_4) / steps) - (2.5 / 3.5));
 
-    ESP_LOGD(NOBOT_CONTROLLER_TAG, "last_sum %d", last_sum);
+    ESP_LOGD(NOBOT_CONTROLLER_TAG, "last_js_x %0.2f last_js_y %0.2f", last_js_x, last_js_y);
 
     // transmit input if something has changed, based on checksum
-    if (current_sum != last_sum || last_buttons != buttons) {
-      ESP_LOGI(NOBOT_CONTROLLER_TAG, "send buttons %d JS X=%d Y=%d", buttons, js_x, js_y);
-      //! TODO: Send the joystick input
+    if (fabs(js_x - last_js_x) > JOYSTICK_DEADZONE || fabs(js_y - last_js_y) > JOYSTICK_DEADZONE || last_buttons != buttons) {
+      // ESP_LOGI(NOBOT_CONTROLLER_TAG, "send buttons %d JS X=%0.2f Y=%0.2f", buttons, js_x, js_y);
+      char message[128];
+      sprintf(message, "{\"type\":\"controller_state\",\"data\":{\"buttons\":%d,\"js_x\":%0.2f,\"js_y\":%0.2f}}", buttons, js_x, js_y);
+      websocket_client_send(message, strlen(message));
+
+      // update the previous axes only when we send a packet
+      last_js_x = js_x;
+      last_js_y = js_y;
     }
 
     // use previous values to detect state changes, triggering packets
-    last_sum = current_sum;
     last_buttons = buttons;
   }
 }
@@ -133,7 +147,7 @@ void app_main() {
   wifi_init_sta();
 
   // 3. create websocket server task
-  // websocket_client_start();
+  websocket_client_start();
 
   // 4. begin reading input from controller
   if ((ret = read_controller_init()) != ESP_OK) {
@@ -141,5 +155,5 @@ void app_main() {
   }
 
   // 5. shut down the websocket in case of read controller error
-  // websocket_client_stop();
+  websocket_client_stop();
 }

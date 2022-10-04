@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -18,7 +19,7 @@
 
 #include "wifi_ws_client.h"
 
-#define NO_DATA_TIMEOUT_SEC 10
+#define NO_DATA_TIMEOUT_SEC 300
 
 /** \brief Tag for ESP logging */
 static const char *TAG = "nobot websocket client";
@@ -61,15 +62,22 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
   switch (event_id) {
     case WEBSOCKET_EVENT_CONNECTED:
       ESP_LOGI(TAG, "WEBSOCKET_EVENT_CONNECTED");
+      // send a client_type message to initialize connection
+      char init_msg[64] = "{\"type\": \"client_type\", \"data\": \"controller\"}";
+      ESP_LOGI(TAG, "Sending %s", init_msg);
+      esp_websocket_client_send_text(client, init_msg, strlen(init_msg), portMAX_DELAY);
       break;
     case WEBSOCKET_EVENT_DISCONNECTED:
       ESP_LOGI(TAG, "WEBSOCKET_EVENT_DISCONNECTED");
       break;
     case WEBSOCKET_EVENT_DATA:
       ESP_LOGI(TAG, "WEBSOCKET_EVENT_DATA");
-      ESP_LOGI(TAG, "Received opcode=%d", data->op_code);
-      ESP_LOGI(TAG, "Received=%.*s", data->data_len, (char *)data->data_ptr);
-      ESP_LOGW(TAG, "Total payload length=%d, data-len=%d, current payload offset=%d\r\n", data->payload_len, data->data_len, data->payload_offset);
+      // opcode 10 is just pings, ignore those
+      if (data->op_code != 10) {
+        ESP_LOGI(TAG, "Received opcode=%d", data->op_code);
+        ESP_LOGI(TAG, "Received=%.*s", data->data_len, (char *)data->data_ptr);
+        ESP_LOGW(TAG, "Total payload length=%d, data-len=%d, current payload offset=%d\r\n", data->payload_len, data->data_len, data->payload_offset);
+      }
       xTimerReset(shutdown_signal_timer, portMAX_DELAY);
       break;
     case WEBSOCKET_EVENT_ERROR:
@@ -96,17 +104,18 @@ void websocket_client_start(void) {
   esp_websocket_register_events(client, WEBSOCKET_EVENT_ANY, websocket_event_handler, (void *)client);
   esp_websocket_client_start(client);
   xTimerStart(shutdown_signal_timer, portMAX_DELAY);
+}
 
-  // send 10 "hello messages" to initialize connection
-  char data[32];
-  int i = 0;
-  while (i < 10) {
-    if (esp_websocket_client_is_connected(client)) {
-      int len = sprintf(data, "hello %04d", i++);
-      ESP_LOGI(TAG, "Sending %s", data);
-      esp_websocket_client_send_text(client, data, len, portMAX_DELAY);
-    }
-    vTaskDelay(1000 / portTICK_RATE_MS);
+/**
+ * @brief Sends a message through the websocket. Should already be JSON-encoded
+ */
+void websocket_client_send(const char *data, int len) {
+  // send the message
+  if (esp_websocket_client_is_connected(client)) {
+    ESP_LOGI(TAG, "Sending %s", data);
+    esp_websocket_client_send_text(client, data, len, portMAX_DELAY);
+  } else {
+    ESP_LOGW(TAG, "Failed to send message '%s' - websocket is not connected.", data);
   }
 }
 

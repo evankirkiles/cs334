@@ -16,6 +16,7 @@
 #define WEBSOCKET_URI CONFIG_WEBSOCKET_URI
 
 void websocket_client_start(void);
+void websocket_client_send(const char *data, int len);
 void websocket_client_stop(void);
 
 #endif /* __WIFI_WS_CLIENT_H__  */
