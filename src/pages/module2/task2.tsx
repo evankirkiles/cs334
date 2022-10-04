@@ -34,8 +34,8 @@ const Module2Task2Page: NextPage = () => {
         </div>
         <ESP32SocketControllerDisplay url={WEBSOCKET_URL} />
         <div className={s.text}>
-          the main differences between this task and the last are that this task's
-          controller is entirely ESP32-based. we don't use a Pi, and therefore
+          the main differences between this task and the last are that this task&apos;s
+          controller is entirely ESP32-based. we don&apos;t use a Pi, and therefore
           have improved size, costs, and on-boot functionality.
         </div>
         {/* <YouTube videoId="PcUaTRtYxaw" className={s.youtubeContainer} /> */}

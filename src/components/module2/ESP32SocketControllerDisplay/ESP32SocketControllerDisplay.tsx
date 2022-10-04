@@ -62,7 +62,7 @@ const ESP32SocketControllerDisplay: React.FC<SocketControllerDisplayProps> =
             break;
         }
       },
-      [setControllerState]
+      [setControllerState, controllerID]
     );
 
     // initialize websocket and listener on page load

@@ -40,6 +40,7 @@ const NobotGame: React.FC<NobotGameProps> = function NobotGame({ world }) {
         onDownloadFinish
       }
     );
+  // @ts-ignore
   }, [world]);
   return (
     <>
