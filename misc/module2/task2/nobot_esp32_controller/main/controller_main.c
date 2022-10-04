@@ -95,8 +95,8 @@ static void read_controller_task(void *pvParameter) {
     // higher than 3.5V simply capping the ADC at 255. There's no real way around
     // this with our hardware, so we kind of have to make do.
     double steps = 0xFF;
-    js_x = (3.5 / 2.5) * ((readJoystickChannel(ADC1_CHANNEL_5) / steps) - (2.5 / 3.5));
-    js_y = (3.5 / 2.5) * ((readJoystickChannel(ADC1_CHANNEL_4) / steps) - (2.5 / 3.5));
+    js_x = (3.5 / 2.5) * ((readJoystickChannel(ADC1_CHANNEL_4) / steps) - (2.5 / 3.5));
+    js_y = (3.5 / 2.5) * ((readJoystickChannel(ADC1_CHANNEL_5) / steps) - (2.5 / 3.5));
 
     ESP_LOGD(NOBOT_CONTROLLER_TAG, "last_js_x %0.2f last_js_y %0.2f", last_js_x, last_js_y);
 

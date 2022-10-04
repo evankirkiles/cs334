@@ -62,6 +62,9 @@ const Home: NextPage = () => {
             <Link href="/module2/task1">
               <div className={styles.task_button}>Task 1</div>
             </Link>
+            <Link href="/module2/task2">
+              <div className={styles.task_button}>Task 2</div>
+            </Link>
           </div>
         </div>
       </div>

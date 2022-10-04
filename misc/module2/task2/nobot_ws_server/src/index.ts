@@ -73,7 +73,12 @@ wss.on("connection", (ws) => {
       case "controller_state":
         // we know this must be a controller. send its listeners its state.
         controller_consumers[userID].forEach((consumer) => {
-          sockets[consumer].send(JSON.stringify(packet.data));
+          sockets[consumer].send(
+            JSON.stringify({
+              type: "controller_state",
+              data: packet.data,
+            })
+          );
         });
         break;
       // connect to controller allows clients to listen only to a specific

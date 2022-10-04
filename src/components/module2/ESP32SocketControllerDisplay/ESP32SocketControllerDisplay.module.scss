@@ -1,0 +1,109 @@
+@import "../../../styles/mixins";
+
+.state_container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  padding: 10px;
+  border: 1px solid $foreground;
+  margin: 10px 0px;
+  position: relative;
+}
+
+// comment
+
+.connection_info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-style: italic;
+  font-size: 10px;
+  opacity: 0.5;
+  text-align: left;
+}
+
+.sensor_display {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sensor_canvas {
+  height: 100px;
+  width: 100px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.sensor_caption {
+  top: 10px;
+  left: 10px;
+  font-style: italic;
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 5px;
+}
+
+.sensor_button_base {
+  height: 20%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border: 1px solid $foreground;
+  background: $background;
+  z-index: 2;
+}
+
+.sensor_button_top {
+  height: 35%;
+  width: 80%;
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  border: 1px solid $foreground;
+  background: $foreground2;
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sensor_switch_top {
+  height: 60%;
+  width: 20%;
+  position: absolute;
+  bottom: 0;
+  left: 40%;
+  border: 1px solid $foreground;
+  background: $foreground2;
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: 50% 100%;
+}
+
+.sensor_joystick_base {
+  height: 70%;
+  width: 70%;
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  border-radius: 50%;
+  border: 1px solid $foreground;
+}
+
+.sensor_joystick_knob {
+  height: 40%;
+  width: 40%;
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  border-radius: 50%;
+  border: 1px solid $foreground;
+  background-color: $foreground2;
+  transition: transform 0.1s ease-in-out;
+}
