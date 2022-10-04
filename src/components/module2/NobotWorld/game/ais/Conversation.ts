@@ -146,7 +146,7 @@ export class Conversation implements IWorldEntity, IInputReceiver {
   }
 
   handleController(state: ControllerState): void {
-    const a = this;
+    this.triggerAction("next", !!(state.buttons & 0b01));
   }
 
   /**
