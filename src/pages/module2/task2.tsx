@@ -57,7 +57,7 @@ const Module2Task2Page: NextPage = () => {
         </div>
         <a
           className={s.remote_link}
-          href="https://github.com/evankirkiles/cs334/tree/master/misc/module2/task1/ws-server"
+          href="https://github.com/evankirkiles/cs334/tree/master/misc/module2/task2/nobot_ws_server"
           target="_blank"
           rel="noopener noreferrer"
         >
