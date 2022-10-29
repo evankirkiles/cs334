@@ -1,0 +1,1 @@
+cmd='/usr/bin/cmake;-DSDKCONFIG=/workspaces/sdkconfig;-DIDF_PATH=/opt/esp/idf;-DIDF_TARGET=esp32;-DPYTHON_DEPS_CHECKED=1;-DPYTHON=python;-DEXTRA_COMPONENT_DIRS=/opt/esp/idf/components/bootloader;-DPROJECT_SOURCE_DIR=/workspaces;-GNinja;<SOURCE_DIR><SOURCE_SUBDIR>'

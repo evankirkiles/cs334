@@ -152,8 +152,7 @@ void app_main() {
   // 4. begin reading input from controller
   if ((ret = read_controller_init()) != ESP_OK) {
     ESP_LOGE(NOBOT_CONTROLLER_TAG, "%s init read controller failed\n", __func__);
+    // shut down the websocket in case of read controller error
+    websocket_client_stop();
   }
-
-  // 5. shut down the websocket in case of read controller error
-  websocket_client_stop();
 }

@@ -8,9 +8,12 @@
 #ifndef __SDK_CONFIG_H__
 #define __SDK_CONFIG_H__
 
+#include "esp_wifi.h"
+
 #define CONFIG_ESP_WIFI_SSID "Green Haus"
 #define CONFIG_ESP_WIFI_PASSWORD "Bluehouse"
+#define CONFIG_ESP_WIFI_AUTHMODE WIFI_AUTH_WPA2_PSK // or WIFI_AUTH_OPEN for yale wireless
 #define CONFIG_ESP_MAXIMUM_RETRY 5
-#define CONFIG_WEBSOCKET_URI "ws://96de-2601-18a-c681-c9a0-10a3-f75c-e629-7a61.ngrok.io"
+#define CONFIG_WEBSOCKET_URI "ws://75c9-128-36-7-251.ngrok.io"
 
 #endif /* __SDK_CONFIG_H__ */

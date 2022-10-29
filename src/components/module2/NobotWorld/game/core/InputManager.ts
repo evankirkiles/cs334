@@ -8,8 +8,7 @@ import { ControllerState, IInputReceiver } from "../interfaces/IInputReceiver";
 import { IUpdatable } from "../interfaces/IUpdatable";
 import { World } from "../world/World";
 
-const CONTROLLER_SOCKET_URL =
-  "ws://96de-2601-18a-c681-c9a0-10a3-f75c-e629-7a61.ngrok.io/";
+const CONTROLLER_SOCKET_URL = "ws://75c9-128-36-7-251.ngrok.io/";
 
 export class InputManager implements IUpdatable {
   public updateOrder: number = 3;

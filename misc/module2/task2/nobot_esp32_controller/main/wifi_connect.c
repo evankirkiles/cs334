@@ -15,6 +15,7 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 
+#include "sdkconfig.h"
 #include "wifi_connect.h"
 
 /* FreeRTOS event group to signal when we are connected*/
@@ -76,6 +77,13 @@ void wifi_init_sta(void) {
   wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
   ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
+  // get the mac address to be able to use yale wireless
+  uint8_t mac_addr[6] = {0};
+  ESP_ERROR_CHECK(esp_read_mac(mac_addr, ESP_MAC_WIFI_STA));
+  ESP_LOGI("WIFI_STA MAC", "0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x",
+           mac_addr[0], mac_addr[1], mac_addr[2],
+           mac_addr[3], mac_addr[4], mac_addr[5]);
+
   esp_event_handler_instance_t instance_any_id;
   esp_event_handler_instance_t instance_got_ip;
   ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
@@ -96,7 +104,7 @@ void wifi_init_sta(void) {
           /* Setting a password implies station will connect to all security modes including WEP/WPA.
            * However these modes are deprecated and not advisable to be used. Incase your Access point
            * doesn't support WPA2, these mode can be enabled by commenting below line */
-          .threshold.authmode = WIFI_AUTH_WPA2_PSK,
+          .threshold.authmode = CONFIG_ESP_WIFI_AUTHMODE,
           .pmf_cfg = {
               .capable = true,
               .required = false},

@@ -1,0 +1,10 @@
+{
+  "C_Cpp.intelliSenseEngine": "Tag Parser",
+  "cmake.environment": {
+    "IDF_COMPONENT_MANAGER": "0"
+  },
+  "files.associations": {
+    "esp_log.h": "c"
+  },
+  "idf.adapterTargetName": "esp32"
+}
