@@ -38,10 +38,10 @@ const Module2Task2Page: NextPage = () => {
           controller is entirely ESP32-based. we don&apos;t use a Pi, and therefore
           have improved size, costs, and on-boot functionality.
         </div>
-        {/* <YouTube videoId="PcUaTRtYxaw" className={s.youtubeContainer} /> */}
+        <YouTube videoId="wNNcLK44mmY" className={s.youtubeContainer} />
         <Link href="/module2/play">
           <a className={s.button} target="_blank" rel="noopener noreferrer">
-            BEGIN
+            BEGIN GAME
           </a>
         </Link>
       </div>
@@ -57,7 +57,7 @@ const Module2Task2Page: NextPage = () => {
         </div>
         <a
           className={s.remote_link}
-          href="https://github.com/evankirkiles/cs334/tree/master/misc/module2/task1/ws-server"
+          href="https://github.com/evankirkiles/cs334/tree/master/misc/module2/task2/nobot_ws_server"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -65,28 +65,30 @@ const Module2Task2Page: NextPage = () => {
           <HiOutlineExternalLink />
         </a>
         <div className={s.text}>
-          download the websocket pi client and modify{" "}
-          <span className={s.code}>__main__.py</span> to reflect the websocket
-          server&apos;s URI and your GPIO input sensors using the{" "}
-          <span className={s.code}>input_types.py</span> input types.
+          download the websocket ESP-32 client and modify{" "}
+          <span className={s.code}>include/sdkconfig.h</span> to reflect the websocket
+          server&apos;s URI and your wifi credentials. build and flash it to your ESP32
+          using the Espressif IDE extension for VSCode.
         </div>
         <a
           className={s.remote_link}
-          href="https://github.com/evankirkiles/cs334.pi/tree/master/src/module2"
+          href="https://github.com/evankirkiles/cs334/tree/master/misc/module2/task2/nobot_esp32_controller"
           target="_blank"
           rel="noopener noreferrer"
         >
-          websocket pi client code
+          ESP32 client code
           <HiOutlineExternalLink />
         </a>
         <div className={s.text}>
-          now, you can listen to messages from the websocket server to get state
+          now, assuming you&apos;ve connected successfully to wifi (which you can check
+          by viewing the serial output upon flashing the ESP32), you can listen
+          to messages from the websocket server to get state
           updates from your controller! an example is live above, which you can
-          view the code for.
+          view the code for below.
         </div>
         <a
           className={s.remote_link}
-          href="https://github.com/evankirkiles/cs334/blob/master/src/components/module2/SocketControllerDisplay/SocketControllerDisplay.tsx"
+          href="https://github.com/evankirkiles/cs334/blob/master/src/components/module2/ESP32SocketControllerDisplay/ESP32SocketControllerDisplay.tsx"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -98,10 +100,13 @@ const Module2Task2Page: NextPage = () => {
         {" "}
         <div className={s.setup_text}>2. CONTROLS</div>
         <div className={s.text}>
-          the code supports any number of variations on the number and types of
-          sensors you use, with the basic primitives being buttons, switches,
-          and joysticks. it also has boilerplate for multiple controllers, which
-          simply needs more advanced logic in the consumer.
+          the joystick controls the movement of the character, while the button
+          represents an &quot;action&quot; determined by the switch state. when
+          the switch is <span className={s.code}>off</span>, i.e. pointed towards
+          you, the button will cause the character to jump. when
+          the switch is <span className={s.code}>on</span>, i.e. pointed away from
+          you, the button will cause the character to interact, allowing you to 
+          &quot;speak&quot; with the characters in the scene.
         </div>
       </div>
     </>
