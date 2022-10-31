@@ -14,9 +14,7 @@
     "wifi_connect.h": "c",
     "config.h": "c",
     "system_error": "c",
-    "*.ipp": "c",
-    "esp_wifi.h": "c",
-    "esp_event.h": "c"
+    "*.ipp": "c"
   },
   "cmake.environment": {
     "IDF_PATH": "~/esp/esp-idf"

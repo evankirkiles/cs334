@@ -63,7 +63,7 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
     case WEBSOCKET_EVENT_CONNECTED:
       ESP_LOGI(TAG, "WEBSOCKET_EVENT_CONNECTED");
       // send a client_type message to initialize connection
-      char init_msg[64] = "{\"type\": \"client_type\", \"data\": \"controller\"}";
+      char init_msg[64] = "{\"type\": \"client_type\", \"data\": \"camera\"}";
       ESP_LOGI(TAG, "Sending %s", init_msg);
       esp_websocket_client_send_text(client, init_msg, strlen(init_msg), portMAX_DELAY);
       break;
@@ -71,12 +71,12 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
       ESP_LOGI(TAG, "WEBSOCKET_EVENT_DISCONNECTED");
       break;
     case WEBSOCKET_EVENT_DATA:
-      ESP_LOGI(TAG, "WEBSOCKET_EVENT_DATA");
       // opcode 10 is just pings, ignore those
       if (data->op_code != 10) {
+        ESP_LOGI(TAG, "WEBSOCKET_EVENT_DATA");
         ESP_LOGI(TAG, "Received opcode=%d", data->op_code);
         ESP_LOGI(TAG, "Received=%.*s", data->data_len, (char *)data->data_ptr);
-        ESP_LOGW(TAG, "Total payload length=%d, data-len=%d, current payload offset=%d\r\n", data->payload_len, data->data_len, data->payload_offset);
+        ESP_LOGI(TAG, "Total payload length=%d, data-len=%d, current payload offset=%d\r\n", data->payload_len, data->data_len, data->payload_offset);
       }
       xTimerReset(shutdown_signal_timer, portMAX_DELAY);
       break;
@@ -118,6 +118,13 @@ void websocket_client_send(const char *data, int len) {
   } else {
     ESP_LOGW(TAG, "Failed to send message '%s' - websocket is not connected.", data);
   }
+}
+
+/**
+ * @brief Listener for websocket messages––only determines when to take a picture.
+ */
+esp_err_t websocket_client_listen(esp_event_handler_t event_handler) {
+  return esp_websocket_register_events(client, WEBSOCKET_EVENT_DATA, event_handler, (void *)client);
 }
 
 /**

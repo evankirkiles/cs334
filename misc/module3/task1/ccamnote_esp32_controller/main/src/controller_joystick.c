@@ -18,7 +18,7 @@
 #include "esp_log.h"
 
 #include "controller_joystick.h"
-#include "wifi_ws_client.h"
+#include "util.h"
 
 // our tag for EPS Info logging
 #define CONTROLLER_JOYSTICK_TAG "CCAMNotary Joystick"
@@ -79,8 +79,8 @@ static void controller_joystick_task(void *pvParameter) {
   while (true) {
     // read in joystick axis input from the ESP32 ADC channels they're set to.
     double steps = 0xFF;
-    js_x = (readJoystickChannel(JOYSTICK_X_PIN) / steps - 0.5) * 2;
-    js_y = (readJoystickChannel(JOYSTICK_Y_PIN) / steps - 0.5) * 2;
+    js_x = nearest_tenth(readJoystickChannel(JOYSTICK_X_PIN) / steps - 0.5) * 2;
+    js_y = nearest_tenth(readJoystickChannel(JOYSTICK_Y_PIN) / steps - 0.5) * 2;
 
     // once joystick has changed significantly since last event
     if (fabs(js_x - last_js_x) > JOYSTICK_DEADZONE || fabs(js_y - last_js_y) > JOYSTICK_DEADZONE) {
@@ -96,8 +96,8 @@ static void controller_joystick_task(void *pvParameter) {
       ESP_LOGI(CONTROLLER_JOYSTICK_TAG, "[joystick] x: %0.2f, y: %0.2f, pressed: %d", ev.xstate, ev.ystate, ev.pressed);
     }
 
-    // sleep for 0.2s so other things can use thread
-    sleep(200);
+    // delay for 10ms so other things can use thread
+    vTaskDelay(10 / portTICK_PERIOD_MS);
   }
 }
 

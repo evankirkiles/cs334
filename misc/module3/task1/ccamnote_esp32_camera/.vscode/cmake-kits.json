@@ -1,0 +1,34 @@
+[
+  {
+    "name": "GCC 11.2.0 riscv32-esp-elf",
+    "compilers": {
+      "C": "~/.espressif/tools/riscv32-esp-elf/esp-2021r2-patch3-8.4.0/riscv32-esp-elf/bin/riscv32-esp-elf-gcc",
+      "CXX": "~/.espressif/tools/riscv32-esp-elf/esp-2021r2-patch3-8.4.0/riscv32-esp-elf/bin/riscv32-esp-elf-g++"
+    },
+    "environmentSetupScript": "~/esp/esp-idf/export.sh"
+  },
+  {
+    "name": "GCC 11.2.0 xtensa-esp32-elf",
+    "compilers": {
+      "C": "~/.espressif/tools/xtensa-esp32-elf/esp-2021r2-patch3-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc",
+      "CXX": "~/.espressif/tools/xtensa-esp32-elf/esp-2021r2-patch3-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-g++"
+    },
+    "environmentSetupScript": "~/esp/esp-idf/export.sh"
+  },
+  {
+    "name": "GCC 11.2.0 xtensa-esp32s2-elf",
+    "compilers": {
+      "C": "~/.espressif/tools/xtensa-esp32s2-elf/esp-2021r2-patch3-8.4.0/xtensa-esp32s2-elf/bin/xtensa-esp32s2-elf-gcc",
+      "CXX": "~/.espressif/tools/xtensa-esp32s2-elf/esp-2021r2-patch3-8.4.0/xtensa-esp32s2-elf/bin/xtensa-esp32s2-elf-g++"
+    },
+    "environmentSetupScript": "~/esp/esp-idf/export.sh"
+  },
+  {
+    "name": "GCC 11.2.0 xtensa-esp32s3-elf",
+    "compilers": {
+      "C": "~/.espressif/tools/xtensa-esp32s3-elf/esp-2021r2-patch3-8.4.0/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-gcc",
+      "CXX": "~/.espressif/tools/xtensa-esp32s3-elf/esp-2021r2-patch3-8.4.0/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-g++"
+    },
+    "environmentSetupScript": "~/esp/esp-idf/export.sh"
+  }
+]

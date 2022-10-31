@@ -4,7 +4,6 @@ if(IDF_VERSION_MAJOR GREATER_EQUAL 4)
             log
             driver
             nvs_flash
-            esp32-button
             esp32-camera
             esp_http_client
             esp_websocket_client
@@ -16,7 +15,6 @@ else()
             log
             driver
             nvs_flash
-            esp32-button
             esp32-camera
             esp_http_client
             esp_websocket_client)

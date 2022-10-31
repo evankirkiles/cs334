@@ -17,6 +17,7 @@
 
 esp_err_t websocket_client_start(void);
 void websocket_client_send(const char *data, int len);
+esp_err_t websocket_client_listen(esp_event_handler_t event_handler);
 void websocket_client_stop(void);
 
 #endif /* __WIFI_WS_CLIENT_H__  */
