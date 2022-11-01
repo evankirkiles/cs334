@@ -5,7 +5,6 @@ if(IDF_VERSION_MAJOR GREATER_EQUAL 4)
             driver
             nvs_flash
             esp32-button
-            esp32-camera
             esp_http_client
             esp_websocket_client
         INCLUDE_DIRS include)
@@ -17,7 +16,6 @@ else()
             driver
             nvs_flash
             esp32-button
-            esp32-camera
             esp_http_client
             esp_websocket_client)
     register_component()
