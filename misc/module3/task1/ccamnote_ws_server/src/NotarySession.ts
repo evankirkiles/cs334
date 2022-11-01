@@ -16,9 +16,18 @@ type ControllerState = {
   joystick_xstate: number;
   button_pressed: number;
   just_pressed: boolean;
+  touchpad_pressed: number;
+  touchpad_state_changed: boolean;
 };
 
-type ControllerStateMinimal = [number, number, number, boolean];
+type ControllerStateMinimal = [
+  number,
+  number,
+  number,
+  boolean,
+  number,
+  boolean
+];
 
 enum MessageType {
   ClientType = "client_type",
@@ -156,11 +165,21 @@ export default class NotarySession {
       joystick_xstate: dataState[1],
       button_pressed: dataState[2],
       just_pressed: dataState[3],
+      touchpad_pressed: dataState[4],
+      touchpad_state_changed: dataState[5],
     };
     // when button is just pressed, tell the camera to take a picture
     if (data.just_pressed) {
       this.camerasMAC.forEach((camera) => {
         this.sockets[camera].send("take_picture");
+      });
+    }
+    // synchronize flash as well
+    if (data.touchpad_state_changed) {
+      this.camerasMAC.forEach((camera) => {
+        this.sockets[camera].send(
+          `flash_${data.touchpad_pressed ? "on" : "off"}`
+        );
       });
     }
     this.controller_consumers[uid].forEach((consumer) => {

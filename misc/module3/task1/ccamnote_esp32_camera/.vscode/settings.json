@@ -20,6 +20,6 @@
     "IDF_PATH": "~/esp/esp-idf"
   },
   "idf.adapterTargetName": "esp32",
-  "idf.port": "/dev/cu.usbserial-1410",
+  "idf.port": "/dev/cu.usbserial-1420",
   "idf.flashType": "UART"
 }

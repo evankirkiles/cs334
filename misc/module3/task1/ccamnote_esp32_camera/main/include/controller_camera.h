@@ -8,6 +8,7 @@
 #ifndef __CONTROLLER_CAMERA_H__
 #define __CONTROLLER_CAMERA_H__
 
+#include <stdbool.h>
 #include "config.h"
 #include "esp_log.h"
 #include "esp_camera.h"
@@ -41,6 +42,7 @@
 // camera functions
 esp_err_t controller_camera_init(void);
 esp_err_t controller_camera_take_photo(camera_fb_t** fb);
+esp_err_t controller_camera_set_flash(bool on);
 esp_err_t controller_camera_return_fb(camera_fb_t *fb);
 
 #endif /* __CONTROLLER_JOYSTICK_H__ */

@@ -15,6 +15,7 @@
  * @return esp_err_t
  */
 esp_err_t controller_camera_init() {
+  // configure the camera
   camera_config_t camera_config = {
       .ledc_channel = LEDC_CHANNEL_0,
       .ledc_timer = LEDC_TIMER_0,
@@ -40,7 +41,15 @@ esp_err_t controller_camera_init() {
       .jpeg_quality = 10,
       .fb_count = 2,
       .grab_mode = CAMERA_GRAB_LATEST};
-  return esp_camera_init(&camera_config);
+  ESP_ERROR_CHECK(esp_camera_init(&camera_config));
+
+  // configure the camera's flash LED pin
+  gpio_config_t flash_conf = {};
+  flash_conf.mode = GPIO_MODE_OUTPUT;
+  flash_conf.pin_bit_mask = CONFIG_CAM_PIN_LAMP;
+  ESP_ERROR_CHECK(gpio_config(&flash_conf));
+
+  return ESP_OK;
 }
 
 /**
@@ -60,6 +69,16 @@ esp_err_t controller_camera_take_photo(camera_fb_t **fb) {
   }
 
   return ESP_OK;
+}
+
+/**
+ * @brief Sets the value of the camera's flash.
+ *
+ * @param on
+ * @return esp_err_t
+ */
+esp_err_t controller_camera_set_flash(bool on) {
+  return gpio_set_level(CONFIG_CAM_PIN_LAMP, on);
 }
 
 /**
