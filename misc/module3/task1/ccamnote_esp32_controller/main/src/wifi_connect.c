@@ -99,7 +99,6 @@ esp_err_t wifi_init_sta(void) {
   wifi_config_t wifi_config = {
       .sta = {
           .ssid = CONFIG_ESP_WIFI_SSID,
-          .password = CONFIG_ESP_WIFI_PASS,
           /* Setting a password implies station will connect to all security modes including WEP/WPA.
            * However these modes are deprecated and not advisable to be used. Incase your Access point
            * doesn't support WPA2, these mode can be enabled by commenting below line */
@@ -109,6 +108,9 @@ esp_err_t wifi_init_sta(void) {
               .required = false},
       },
   };
+  // if we're connecting to private wifi, add a password
+  if (CONFIG_ESP_WIFI_AUTHMODE != WIFI_AUTH_OPEN)
+    memcpy(wifi_config.sta.password, (unsigned char*)CONFIG_ESP_WIFI_PASS, strlen(CONFIG_ESP_WIFI_PASS));
   ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
   ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
   ESP_ERROR_CHECK(esp_wifi_start());

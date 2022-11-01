@@ -25,6 +25,7 @@
 
 #include "controller_buttons.h"
 #include "controller_joystick.h"
+#include "controller_touchpad.h"
 #include "wifi_connect.h"
 #include "wifi_ws_client.h"
 
@@ -53,14 +54,17 @@ typedef struct {
 static void read_controller_task(void *pvParameter) {
   // begin & listen to the joystick & button event queue
   char message[128];
-  bool received_joystick = false, received_button = false;
+  bool received_joystick = false, received_button = false, received_touchpad = false;
   controller_joystick_event_t ev_joystick;
   ev_joystick.xstate = 0;
   ev_joystick.ystate = 0;
   ev_joystick.pressed = false;
   controller_buttons_event_t ev_buttons;
   ev_buttons.state = 0;
+  controller_touchpad_event_t ev_touchpad;
+  ev_touchpad.state = 0;
   QueueHandle_t controller_buttons_events = controller_buttons_init();
+  QueueHandle_t controller_touchpad_events = controller_touchpad_init();
   // QueueHandle_t controller_joystick_events = controller_joystick_init();
 
   // // peer address
@@ -74,10 +78,17 @@ static void read_controller_task(void *pvParameter) {
     // we want to send the entire state of the joystick to the websocket.
     //  - we wait up to 300 ms for the buttons, and then 300 ms for joystick
     received_button = xQueueReceive(controller_buttons_events, &ev_buttons, 20 / portTICK_PERIOD_MS);
+    received_touchpad = xQueueReceive(controller_touchpad_events, &ev_touchpad, 20 / portTICK_PERIOD_MS);
     // received_button = xQueueReceive(controller_joystick_events, &ev_joystick, 20 / portTICK_PERIOD_MS);
-    if (received_joystick || received_button) {
+    if (received_joystick || received_button || received_touchpad) {
       // if we got either a joystick or button update, send an update to the websocket
-      sprintf(message, "{\"type\":\"controller_state\",\"data\":[%.2f, %.2f, %d, %s]}", ev_joystick.xstate, ev_joystick.ystate, ev_buttons.state, ((ev_buttons.state & 1) && received_button) ? "true" : "false");
+      sprintf(message, "{\"type\":\"controller_state\",\"data\":[%.2f, %.2f, %d, %s, %d, %s]}",
+              ev_joystick.xstate,
+              ev_joystick.ystate,
+              ev_buttons.state,
+              ((ev_buttons.state & 1) && received_button) ? "true" : "false",
+              ev_touchpad.state,
+              ((ev_touchpad.state & 1) && received_touchpad) ? "true" : "false");
       websocket_client_send(message, strlen(message));
     }
   }
