@@ -15,8 +15,8 @@
 #define CONFIG_ESP_WIFI_PASS "Bluehouse"
 #define CONFIG_ESP_WIFI_AUTHMODE WIFI_AUTH_WPA2_PSK  // or WIFI_AUTH_OPEN for yale wireless
 #define CONFIG_ESP_MAXIMUM_RETRY 5
-#define CONFIG_WEBSOCKET_URI "ws://bcab-2601-18a-c681-c9a0-cc2-d634-6114-6a35.ngrok.io"
-#define CONFIG_HTTP_SERVER_URI "http://bcab-2601-18a-c681-c9a0-cc2-d634-6114-6a35.ngrok.io/image"
+#define CONFIG_WEBSOCKET_URI "ws://eb2e-2601-18a-c681-c9a0-e484-59f-757b-4ae4.ngrok.io"
+#define CONFIG_HTTP_SERVER_URI "http://eb2e-2601-18a-c681-c9a0-e484-59f-757b-4ae4.ngrok.io/image"
 
 // Configuration for controller inputs
 #define CONFIG_PIN_JOYSTICK_VRX 3  // ANALOG 6, GPIO 34
