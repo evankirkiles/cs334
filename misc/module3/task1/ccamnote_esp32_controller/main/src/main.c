@@ -88,7 +88,7 @@ static void read_controller_task(void *pvParameter) {
               ev_buttons.state,
               ((ev_buttons.state & 1) && received_button) ? "true" : "false",
               ev_touchpad.state,
-              ((ev_touchpad.state & 1) && received_touchpad) ? "true" : "false");
+              received_touchpad ? "true" : "false");
       websocket_client_send(message, strlen(message));
     }
   }

@@ -45,8 +45,11 @@ esp_err_t controller_camera_init() {
 
   // configure the camera's flash LED pin
   gpio_config_t flash_conf = {};
+  flash_conf.intr_type = GPIO_INTR_DISABLE;
   flash_conf.mode = GPIO_MODE_OUTPUT;
-  flash_conf.pin_bit_mask = CONFIG_CAM_PIN_LAMP;
+  flash_conf.pin_bit_mask = (1ULL << CONFIG_CAM_PIN_LAMP);
+  flash_conf.pull_down_en = 0;
+  flash_conf.pull_up_en = 0;
   ESP_ERROR_CHECK(gpio_config(&flash_conf));
 
   return ESP_OK;

@@ -5,14 +5,14 @@ import path from "path";
 import NotarySession from "./NotarySession";
 
 const PORT = process.env.PORT || 3000;
-const INDEX = "/index.html";
+const ROOT = path.join(__dirname, "..");
 
 // initialize express server
 const app = express();
 
 // add our public folders for file uploads
-app.use("/public", express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/public"));
+app.use("/public", express.static(path.join(ROOT, "public")));
+app.use(express.static(path.join(ROOT, "public")));
 
 /* ------------------------------ IMAGE UPLOAD ------------------------------ */
 
@@ -24,7 +24,7 @@ app.post("/image", (req, res) => {
     data = Buffer.concat([data, chunk]);
   });
   req.on("end", function () {
-    const filePath = path.join(__dirname, "..", "public", "image.jpg");
+    const filePath = path.join(ROOT, "public", "image.jpg");
     console.log(data.byteLength);
     fs.writeFile(filePath, data, () => {
       console.log(`Image written to ${filePath}`);

@@ -70,7 +70,7 @@ static void receive_websocket_data(void* handler_args, esp_event_base_t base, in
   char command[13];
   snprintf(command, sizeof command, "%s", (char*)data->data_ptr);
   // if we're sent the take_picture command, do so
-  if (!strcmp(command, "take_picture")) {
+  if (!strncmp("take_picture", command, strlen("take_picture"))) {
     ESP_LOGI(TAG, "Picture ordered by websocket. Proceeding...");
     camera_fb_t* fb = NULL;
     // take a picture with the camera into picBuf and bufLen
@@ -82,11 +82,13 @@ static void receive_websocket_data(void* handler_args, esp_event_base_t base, in
     // and finally clean up the frame buffer
     ESP_ERROR_CHECK(controller_camera_return_fb(fb));
     // when flash turns on, tell the camera to turn the flash on
-  } else if (!strcmp(command, "flash_on")) {
+  } else if (!strncmp("flash_on", command, strlen("flash_on"))) {
+    ESP_LOGI(TAG, "Turning flash on!");
     controller_camera_set_flash(true);
     // likewise for flash off
-  } else if (!strcmp(command, "flash_off")) {
-    controller_camera_set_flash(0);
+  } else if (!strncmp("flash_off", command, strlen("flash_off"))) {
+    ESP_LOGI(TAG, "Turning flash off!");
+    controller_camera_set_flash(false);
   }
 }
 
