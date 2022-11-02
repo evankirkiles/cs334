@@ -37,4 +37,4 @@ if everything worked, you should begin receiving controller input on the server 
 
 ### Common Problems
 
-the submodule for the `esp32-button` component is sometimes broken. in that case, you can simply download the `esp32-button` repository from [here](https://github.com/craftmetrics/esp32-button) and put that in your `components/` folder.
+the submodule for the `esp32-button` component is sometimes broken. in that case, you can simply download the `esp32-button` repository from [here](https://github.com/craftmetrics/esp32-button) and put that in your `components/` folder. make sure you `invert` the debouncer as well, otherwise your button inputs will be inverted.
