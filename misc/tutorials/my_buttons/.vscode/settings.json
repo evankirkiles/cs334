@@ -1,0 +1,11 @@
+{
+  "C_Cpp.intelliSenseEngine": "Tag Parser",
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 2, ColumnLimit: 0 }",
+  "files.associations": {
+    "*.inc": "c",
+    "task.h": "c"
+  },
+  "idf.port": "/dev/cu.usbserial-1410",
+  "idf.flashType": "UART",
+  "idf.adapterTargetName": "esp32"
+}
