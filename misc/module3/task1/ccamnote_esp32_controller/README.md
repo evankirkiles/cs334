@@ -1,52 +1,40 @@
-# Hello World Example
+# Module 3, Task 1: Controller
 
-Starts a FreeRTOS task to print "Hello World".
+_by Evan Kirkiles. Nov. 1, 2022_
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+the controller is a standalone system that emits state-based messages over websockets to a server. it reads state from two components:
 
-## How to use example
+1. a button using the `esp32-button` component, and
+2. a capacitive touch sensor using the `esp32-touch` driver.
 
-Follow detailed instructions provided specifically for this example. 
+the state diff is calculated within the controller and used to only send events when something actually changes in the controller itself.
 
-Select the instructions depending on Espressif chip installed on your development board:
+## Development
 
-- [ESP32 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
-- [ESP32-S2 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/get-started/index.html)
+To run the controller's code, you'll need the [Espressif IDE](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html).
 
+```bash
+# clone the git repository and navigate into the controller
+$ git clone --recurse-submodules -j8 git@github.com:evankirkiles/cs334.git
+$ cd cs334/misc/module3/task1/ccamnote_esp32_controller
 
-## Example folder contents
-
-The project **hello_world** contains one source file in C language [hello_world_main.c](main/hello_world_main.c). The file is located in folder [main](main).
-
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt` files that provide set of directives and instructions describing the project's source files and targets (executable, library, or both). 
-
-Below is short explanation of remaining files in the project folder.
-
-```
-├── CMakeLists.txt
-├── example_test.py            Python script used for automated example testing
-├── main
-│   ├── CMakeLists.txt
-│   ├── component.mk           Component make file
-│   └── hello_world_main.c
-├── Makefile                   Makefile used by legacy GNU Make
-└── README.md                  This is the file you are currently reading
+# load ESP-IDF environment variables
+$ $IDF_PATH/export.sh
 ```
 
-For more information on structure and contents of ESP-IDF projects, please refer to Section [Build System](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html) of the ESP-IDF Programming Guide.
+now, make any modifications to `main/include/config.h`, changing the WiFi credentials and server URL. then, build & flash your ESP32. it is highly recommended to use the [VSCode Espressif IDF](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension) extension, as this provides a GUI for running the `idf.py` commands below:
 
-## Troubleshooting
+```bash
+# build the code
+$ idf.py build
 
-* Program upload failure
+# flash to your connected ESP-32, replacing the port
+#   e.g. idf.py flash -p /dev/cu.usbserial-1410
+$ idf.py flash -p <USB-PORT-FOR-ESP32>
+```
 
-    * Hardware connection is not correct: run `idf.py -p PORT monitor`, and reboot your board to see if there are any output logs.
-    * The baud rate for downloading is too high: lower your baud rate in the `menuconfig` menu, and try again.
+if everything worked, you should begin receiving controller input on the server configured in `config.h`!
 
-## Technical support and feedback
+### Common Problems
 
-Please use the following feedback channels:
-
-* For technical queries, go to the [esp32.com](https://esp32.com/) forum
-* For a feature request or bug report, create a [GitHub issue](https://github.com/espressif/esp-idf/issues)
-
-We will get back to you as soon as possible.
+the submodule for the `esp32-button` component is sometimes broken. in that case, you can simply download the `esp32-button` repository from [here](https://github.com/craftmetrics/esp32-button) and put that in your `components/` folder. make sure you `invert` the debouncer as well, otherwise your button inputs will be inverted.

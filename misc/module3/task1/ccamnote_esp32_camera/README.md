@@ -1,52 +1,38 @@
-# Hello World Example
+# Module 3, Task 1: Camera
 
-Starts a FreeRTOS task to print "Hello World".
+_by Evan Kirkiles. Nov. 1, 2022_
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+the camera is a standalone system that receives commands over websockets from a server. it has no pin out, so it is entirely made up of the ESP-CAM held in place inside of one of the marlboro red boxes, powered through serial. it receives three possible commands:
 
-## How to use example
+1. `take_picture` - use the `esp-camera` component to read the camera data into the frame buffer, then write the contents of the frame buffer to the body of a POST request, and send to `<URL>/image`.
+2. `flash_{on,off}` - set the output of the pin corresponding to the ESP-CAM’s LED flash.
 
-Follow detailed instructions provided specifically for this example. 
+## Development
 
-Select the instructions depending on Espressif chip installed on your development board:
+To run the camera's code, you'll need the [Espressif IDE](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html).
 
-- [ESP32 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
-- [ESP32-S2 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/get-started/index.html)
+```bash
+# clone the git repository and navigate into the camera
+$ git clone --recurse-submodules -j8 git@github.com:evankirkiles/cs334.git
+$ cd cs334/misc/module3/task1/ccamnote_esp32_camera
 
-
-## Example folder contents
-
-The project **hello_world** contains one source file in C language [hello_world_main.c](main/hello_world_main.c). The file is located in folder [main](main).
-
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt` files that provide set of directives and instructions describing the project's source files and targets (executable, library, or both). 
-
-Below is short explanation of remaining files in the project folder.
-
-```
-├── CMakeLists.txt
-├── example_test.py            Python script used for automated example testing
-├── main
-│   ├── CMakeLists.txt
-│   ├── component.mk           Component make file
-│   └── hello_world_main.c
-├── Makefile                   Makefile used by legacy GNU Make
-└── README.md                  This is the file you are currently reading
+# load ESP-IDF environment variables
+$ $IDF_PATH/export.sh
 ```
 
-For more information on structure and contents of ESP-IDF projects, please refer to Section [Build System](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html) of the ESP-IDF Programming Guide.
+now, make any modifications to `main/include/config.h`, changing the WiFi credentials and server URL. then, build & flash your ESP-CAM. it is highly recommended to use the [VSCode Espressif IDF](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension) extension, as this provides a GUI for running the `idf.py` commands below:
 
-## Troubleshooting
+```bash
+# build the code
+$ idf.py build
 
-* Program upload failure
+# flash to your connected ESP-32, replacing the port
+#   e.g. idf.py flash -p /dev/cu.usbserial-1410
+$ idf.py flash -p <USB-PORT-FOR-ESP32>
+```
 
-    * Hardware connection is not correct: run `idf.py -p PORT monitor`, and reboot your board to see if there are any output logs.
-    * The baud rate for downloading is too high: lower your baud rate in the `menuconfig` menu, and try again.
+if everything worked, you should begin consuming controller input on your camera from the server configured in `config.h`!
 
-## Technical support and feedback
+### Common Problems
 
-Please use the following feedback channels:
-
-* For technical queries, go to the [esp32.com](https://esp32.com/) forum
-* For a feature request or bug report, create a [GitHub issue](https://github.com/espressif/esp-idf/issues)
-
-We will get back to you as soon as possible.
+the submodule for the `esp32-camera` component is sometimes broken. in that case, you can simply download the `esp32-camera` repository from [here](https://github.com/espressif/esp32-camera/tree/master) and put that in your `components/` folder.
