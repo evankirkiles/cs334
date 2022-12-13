@@ -24,10 +24,41 @@ typedef struct {
 } button_t;
 
 // button maps for easy button reference
-#define BUTTON_SELECT (PIN_BIT(CONFIG_PIN_BUTTON_1) | PIN_BIT(CONFIG_PIN_BUTTON_2))
+#define BUTTON_SELECT (             \
+    PIN_BIT(CONFIG_PIN_BUTTON_0) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_1) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_2) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_3) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_4) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_5) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_6) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_7) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_8) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_9) |  \
+    PIN_BIT(CONFIG_PIN_BUTTON_10) | \
+    PIN_BIT(CONFIG_PIN_BUTTON_11) | \
+    PIN_BIT(CONFIG_PIN_BUTTON_12) | \
+    PIN_BIT(CONFIG_PIN_BUTTON_13) | \
+    PIN_BIT(CONFIG_PIN_BUTTON_14) | \
+    PIN_BIT(CONFIG_PIN_BUTTON_15))
 static const button_t button_idx_map[] = {
-    [0] { CONFIG_PIN_BUTTON_1 },
-    [1] { CONFIG_PIN_BUTTON_2 }};
+    [0] { CONFIG_PIN_BUTTON_0 },
+    [1] { CONFIG_PIN_BUTTON_1 },
+    [2] { CONFIG_PIN_BUTTON_2 },
+    [3] { CONFIG_PIN_BUTTON_3 },
+    [4] { CONFIG_PIN_BUTTON_4 },
+    [5] { CONFIG_PIN_BUTTON_5 },
+    [6] { CONFIG_PIN_BUTTON_6 },
+    [7] { CONFIG_PIN_BUTTON_7 },
+    [8] { CONFIG_PIN_BUTTON_8 },
+    [9] { CONFIG_PIN_BUTTON_9 },
+    [10] { CONFIG_PIN_BUTTON_10 },
+    [11] { CONFIG_PIN_BUTTON_11 },
+    [12] { CONFIG_PIN_BUTTON_12 },
+    [13] { CONFIG_PIN_BUTTON_13 },
+    [14] { CONFIG_PIN_BUTTON_14 },
+    [15] { CONFIG_PIN_BUTTON_15 },
+};
 static const size_t button_idx_map_length = sizeof(button_idx_map) / sizeof(button_t);
 
 // queue into which button events are placed
@@ -128,11 +159,11 @@ static void read_controller_task(void *pvParameter) {
     // spend 20ms to receive any button events
     if (xQueueReceive(button_queue, &s_buttons, 20 / portTICK_PERIOD_MS))
       ESP_LOGD(TAG, "buttons changed: %d", s_buttons);
-    // read in joystick values
-    js1_x = read_joystick_channel(CONFIG_PIN_JOYSTICK_1_VRX);
-    js1_y = read_joystick_channel(CONFIG_PIN_JOYSTICK_1_VRY);
-    js2_x = read_joystick_channel(CONFIG_PIN_JOYSTICK_2_VRX);
-    js2_y = read_joystick_channel(CONFIG_PIN_JOYSTICK_2_VRY);
+    // read in joystick values, rotated 90º counterclockwise
+    js1_x = 0xFF - read_joystick_channel(CONFIG_PIN_JOYSTICK_1_VRY);
+    js1_y = read_joystick_channel(CONFIG_PIN_JOYSTICK_1_VRX);
+    js2_x = 0xFF - read_joystick_channel(CONFIG_PIN_JOYSTICK_2_VRY);
+    js2_y = read_joystick_channel(CONFIG_PIN_JOYSTICK_2_VRX);
     // convert to checksum
     s_joysticks = (js2_x << 24) + (js2_y << 16) + (js1_x << 8) + js1_y;
     // if something changed, transmit across bluetooth

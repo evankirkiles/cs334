@@ -4,10 +4,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   padding: 20px;
-  min-height: 100vh;
   font-family: "FT88";
 }
 
@@ -162,4 +161,12 @@
     content: ">";
     // color: $background2;
   }
+}
+
+.image_embedded {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  border: 1px dashed $foreground2;
 }

@@ -35,7 +35,7 @@ void app_main() {
   }
   ESP_ERROR_CHECK(ret);
 
-  // 2. initialize bluetooth settings
+  // 2. initialize and start bluetooth
   ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT));
   esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
   ESP_ERROR_CHECK(esp_bt_controller_init(&bt_cfg));
@@ -44,7 +44,7 @@ void app_main() {
   ESP_ERROR_CHECK(esp_bluedroid_enable());
   ESP_ERROR_CHECK(esp_hidd_profile_init());
 
-  // 3. register callback functions
+  // 3. register bluetooth callback functions
   esp_ble_gap_register_callback(gap_event_callback);
   esp_hidd_register_callbacks(hidd_event_callback);
 
